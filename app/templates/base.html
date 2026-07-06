@@ -22,6 +22,7 @@
         <a href="/quests" class="{% if request.url.path.startswith('/quest') or request.url.path == '/quests' %}active{% endif %}">📜 Quests</a>
         <a href="/classes" class="{% if request.url.path == '/classes' %}active{% endif %}">🛡️ Classes</a>
         <a href="/gear" class="{% if request.url.path == '/gear' %}active{% endif %}">🎒 Gear</a>
+        <a href="/books" class="{% if request.url.path.startswith('/book') or request.url.path == '/books' %}active{% endif %}">📚 Books</a>
         <a href="/mini" class="{% if request.url.path == '/mini' %}active{% endif %}">📱 Mini View</a>
       </nav>
       <div class="side-card">
@@ -60,6 +61,7 @@
         <a href="/quests">Open Quest Board</a>
         <a href="/map">Open World Map</a>
         <a href="/gear">View Gear</a>
+        <a href="/books">Open Books of Knowledge</a>
         <a href="/mini">Open Mini Progress View</a>
         <a href="/lock-card.svg">Open Lock Screen SVG</a>
       </div>

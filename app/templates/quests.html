@@ -1,33 +1,27 @@
 {% extends "base.html" %}
 {% block heading %}Quest Board{% endblock %}
 {% block content %}
+{% set visible_quests = state.quests | rejectattr('status', 'equalto', 'Hidden') | sort(attribute='recommended_level') | list %}
+{% set hidden_quests = state.quests | selectattr('status', 'equalto', 'Hidden') | list %}
 <section class="panel">
-  <div class="panel-title"><h3>Available and Known Quests</h3><span class="muted">Hidden quests reveal later.</span></div>
+  <div class="panel-title"><h3>Available and Known Quests</h3><span class="muted">{{ hidden_quests|length }} hidden quests remain uncharted.</span></div>
   <div class="quest-list full">
-    {% for quest in state.quests %}
-    {% if quest.status == 'Hidden' %}
-    <div class="quest-card hidden-card">
-      <div class="quest-icon">?</div>
-      <div>
-        <small>Unknown · Undiscovered</small>
-        <strong>Hidden Quest</strong>
-        <p>This quest belongs to a zone you have not reached yet.</p>
-      </div>
-      <div class="quest-status"><b>??? XP</b><span>Hidden</span></div>
-    </div>
-    {% else %}
+    {% for quest in visible_quests %}
     <a class="quest-card {{ quest.status|lower }}" href="/quest/{{ quest.id }}">
-      <div class="quest-icon">{% if 'Boss' in quest.tags %}👹{% elif 'Linux' in quest.tags %}⌨️{% else %}🎯{% endif %}</div>
+      <div class="quest-icon">{% if 'Boss' in quest.tags %}👹{% elif 'Dungeon' in quest.tags %}🏰{% elif 'Linux' in quest.tags %}⌨️{% elif 'SDL' in quest.tags %}🎮{% elif 'Military' in quest.tags %}🛰️{% else %}🎯{% endif %}</div>
       <div>
-        <small>{{ quest.number }} · {{ quest.zone }} · Recommended Level {{ quest.recommended_level }}</small>
+        <small>{{ quest.number }} · {{ quest.zone }} · Level {{ quest.recommended_level }} · {{ quest.type }}</small>
         <strong>{{ quest.name }}</strong>
         <p>{{ quest.summary }}</p>
         <div class="tags">{% for tag in quest.tags %}<span>{{ tag }}</span>{% endfor %}</div>
       </div>
       <div class="quest-status"><b>{{ quest.xp }} XP</b><span>{{ quest.status }}</span><div class="progress tiny"><span style="width: {{ quest.progress }}%"></span></div></div>
     </a>
-    {% endif %}
     {% endfor %}
   </div>
+</section>
+<section class="panel">
+  <div class="panel-title"><h3>Uncharted Quest Fog</h3><span class="muted">Like WoW, the distant world is rumor until you travel there.</span></div>
+  <p class="muted">Hidden quests are intentionally not listed one-by-one. Complete the known chain to reveal new zones and quest hubs.</p>
 </section>
 {% endblock %}

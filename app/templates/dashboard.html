@@ -66,7 +66,8 @@
   <article class="panel wide">
     <div class="panel-title"><h3>Starting Quests</h3><a href="/quests">View All →</a></div>
     <div class="quest-list">
-      {% for quest in state.quests if quest.status != 'Hidden' %}
+      {% set visible_start = state.quests | rejectattr('status', 'equalto', 'Hidden') | sort(attribute='recommended_level') | list %}
+      {% for quest in visible_start %}
       {% if loop.index <= 5 %}
       <a class="quest-card {{ quest.status|lower }}" href="/quest/{{ quest.id }}">
         <div class="quest-icon">{% if 'Boss' in quest.tags %}👹{% elif 'Linux' in quest.tags %}⌨️{% else %}🎯{% endif %}</div>
@@ -100,6 +101,18 @@
     {% for skill in state.skills %}
     <div class="skill-row"><span>{{ skill.name }}</span><div class="progress tiny"><span style="width: {{ skill.value }}%"></span></div><b>{{ skill.value }}%</b></div>
     {% endfor %}
+  </article>
+
+
+  <article class="panel">
+    <div class="panel-title"><h3>Books of Knowledge</h3><a href="/books">Study →</a></div>
+    {% set unlocked_books = state.books | selectattr('unlocked') | list %}
+    <p class="muted">Concept help unlocks as you prove the foundation. No 2D arrays before loops and arrays.</p>
+    <div class="book-mini-list">
+      {% for book in unlocked_books[:5] %}
+      <a href="/book/{{ book.id }}" class="book-chip unlocked">Lv {{ book.book_level }} · {{ book.concept }}</a>
+      {% endfor %}
+    </div>
   </article>
 
   <article class="panel">

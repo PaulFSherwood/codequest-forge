@@ -252,3 +252,41 @@ input, textarea { width: 100%; border: 1px solid #334155; background: #060b14; c
   .map-node { min-width: 120px; max-width: 140px; padding: 8px; }
   .map-node strong { font-size: 12px; }
 }
+
+/* v0.3 quest database/progression helpers */
+.button.secondary { background: #1e293b; box-shadow: none; }
+.small-list { color: var(--muted); line-height: 1.7; }
+.small-list code { color: #c4b5fd; background: #111827; padding: 2px 6px; border-radius: 6px; }
+.mastery-list { color: #dbeafe; line-height: 1.6; padding-left: 22px; }
+.quest-card.completed { border-color: rgba(34,197,94,.65); background: rgba(20,83,45,.16); }
+.quest-card.available { border-color: rgba(96,165,250,.6); }
+.quest-card.pending { border-color: rgba(250,204,21,.6); }
+
+
+/* v0.4 Books of Knowledge */
+.books-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); gap: 14px; }
+.book-card { display: grid; grid-template-columns: 56px 1fr; gap: 14px; padding: 16px; border: 1px solid var(--line); border-radius: 18px; background: rgba(10,15,28,.72); }
+.book-card.locked { opacity: .48; filter: grayscale(.55); border-style: dashed; }
+.book-card.unlocked { border-color: rgba(96,165,250,.55); }
+.book-cover { width: 52px; height: 68px; display: grid; place-items: center; border-radius: 8px; background: linear-gradient(135deg,#1e3a8a,#581c87); box-shadow: inset 0 0 20px rgba(255,255,255,.08); }
+.book-card strong { display: block; margin: 4px 0 6px; color: #f8fafc; }
+.book-card p { color: var(--muted); margin: 0 0 10px; }
+.book-mini-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.book-chip { border: 1px solid var(--line); border-radius: 999px; padding: 7px 10px; font-size: 13px; background: #111827; color: #dbeafe; }
+.book-chip.unlocked { border-color: rgba(96,165,250,.55); background: rgba(30,58,138,.35); }
+.book-chip.locked { opacity: .55; border-style: dashed; }
+.copy-box { width: 100%; box-sizing: border-box; background: #080d18; color: #e0e7ff; border: 1px solid var(--line); border-radius: 12px; padding: 12px; resize: vertical; }
+
+
+.book-progress-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 18px 0; }
+.book-stage-pill { border: 1px solid rgba(148, 163, 184, .25); border-radius: 14px; padding: 12px; background: rgba(15, 23, 42, .72); color: #a7b0c8; font-weight: 700; text-align: center; }
+.book-stage-pill.done { color: #f8fafc; border-color: rgba(34, 197, 94, .55); background: rgba(22, 101, 52, .26); }
+.book-stage-card { border: 1px solid rgba(148, 163, 184, .16); border-radius: 18px; padding: 16px; background: rgba(2, 6, 23, .32); }
+.book-stage-card.dimmed { opacity: .68; }
+.stage-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.status-badge { border-radius: 999px; padding: 6px 10px; border: 1px solid rgba(148, 163, 184, .25); color: #cbd5e1; font-size: .82rem; }
+.status-badge.done { border-color: rgba(34, 197, 94, .6); color: #bbf7d0; background: rgba(22, 101, 52, .25); }
+.code-card { white-space: pre-wrap; overflow-x: auto; border-radius: 14px; padding: 14px; background: #050814; border: 1px solid rgba(148, 163, 184, .18); color: #dbeafe; line-height: 1.45; }
+.big-stat { font-size: 3rem; font-weight: 900; color: #f8fafc; line-height: 1; }
+.mini-meter { height: 8px; border-radius: 999px; background: rgba(51, 65, 85, .75); overflow: hidden; margin: 10px 0; }
+.mini-meter span { display: block; height: 100%; background: linear-gradient(90deg, #7c3aed, #d946ef); border-radius: inherit; }

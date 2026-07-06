@@ -1,20 +1,11 @@
-# CodeQuest Forge v0.2.0
+# Patch Notes
 
-This version corrects the campaign start.
+## v0.5.0
 
-## Changed
-
-- Starts at Level 1 with 0 XP.
-- Starts in The Compiler Yard instead of mid-game.
-- Adds a clear "Start Here" panel.
-- Adds Quest 001: Hello C++ Campfire.
-- Adds early locked quests for CMake, command line args, file persistence, and the first boss dungeon.
-- Reworks the map into an overworld-style travel map.
-- Future zones are hidden as uncharted regions.
-- Gear starts locked and must be earned.
-- Mini view now reflects the true starter campaign.
-- Lock-screen SVG now reflects the starter trial.
-
-## Notes
-
-Quest completion is still manual in this prototype. Submit the GitHub link and console output; later versions can add review/approve buttons and automatic XP/gear unlocks.
+- Added Book progress database table.
+- Added Show Me / Guide Me / Test Me mode tracking.
+- Added book help-use tracking with five teaching charges.
+- Added book prerequisites based on completed quests and mastered earlier books.
+- Added book stage buttons and reset button.
+- Expanded book seed data with examples, guided blanks, and memory tests.
+- Kept quests as the only source of XP; books teach but do not level the character.

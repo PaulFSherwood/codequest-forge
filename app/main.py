@@ -12,7 +12,7 @@ from . import storage
 
 ROOT = Path(__file__).resolve().parents[1]
 
-app = FastAPI(title="CodeQuest Forge", version="0.2.0")
+app = FastAPI(title="CodeQuest Forge", version="0.5.0")
 app.mount("/static", StaticFiles(directory=ROOT / "app" / "static"), name="static")
 templates = Jinja2Templates(directory=ROOT / "app" / "templates")
 
@@ -46,6 +46,55 @@ def classes(request: Request):
 @app.get("/gear", response_class=HTMLResponse)
 def gear(request: Request):
     return render(request, "gear.html")
+
+
+@app.get("/books", response_class=HTMLResponse)
+def books(request: Request):
+    return render(request, "books.html")
+
+
+@app.get("/book/{book_id}", response_class=HTMLResponse)
+def book_detail(request: Request, book_id: str):
+    book = storage.find_book(book_id)
+    if not book:
+        raise HTTPException(status_code=404, detail="Book not found")
+    return render(request, "book_detail.html", book=book)
+
+
+
+@app.post("/book/{book_id}/stage")
+def complete_book_stage(book_id: str, stage: str = Form(...)):
+    book = storage.find_book(book_id)
+    if not book:
+        raise HTTPException(status_code=404, detail="Book not found")
+    if not book.get("unlocked"):
+        raise HTTPException(status_code=400, detail="Book is locked")
+    if stage == "guide" and not book.get("show_done"):
+        raise HTTPException(status_code=400, detail="Finish Show Me first")
+    if stage == "test" and not book.get("guide_done"):
+        raise HTTPException(status_code=400, detail="Finish Guide Me first")
+    storage.mark_book_stage(book_id, stage)
+    return RedirectResponse(url=f"/book/{book_id}?stage={stage}", status_code=303)
+
+
+@app.post("/book/{book_id}/use-help")
+def use_book_help(book_id: str):
+    book = storage.find_book(book_id)
+    if not book:
+        raise HTTPException(status_code=404, detail="Book not found")
+    if not book.get("unlocked"):
+        raise HTTPException(status_code=400, detail="Book is locked")
+    storage.use_book_help(book_id)
+    return RedirectResponse(url=f"/book/{book_id}?help=1", status_code=303)
+
+
+@app.post("/book/{book_id}/reset")
+def reset_book(book_id: str):
+    book = storage.find_book(book_id)
+    if not book:
+        raise HTTPException(status_code=404, detail="Book not found")
+    storage.clear_book_progress(book_id)
+    return RedirectResponse(url=f"/book/{book_id}?reset=1", status_code=303)
 
 
 @app.get("/quests", response_class=HTMLResponse)
@@ -84,6 +133,24 @@ def submit_quest(
     return RedirectResponse(url=f"/quest/{quest_id}?submitted=1", status_code=303)
 
 
+@app.post("/quest/{quest_id}/complete")
+def complete_quest(quest_id: str):
+    quest = storage.find_quest(quest_id)
+    if not quest:
+        raise HTTPException(status_code=404, detail="Quest not found")
+    storage.mark_quest_complete(quest_id)
+    return RedirectResponse(url=f"/quest/{quest_id}?completed=1", status_code=303)
+
+
+@app.post("/quest/{quest_id}/undo")
+def undo_quest(quest_id: str):
+    quest = storage.find_quest(quest_id)
+    if not quest:
+        raise HTTPException(status_code=404, detail="Quest not found")
+    storage.clear_quest_override(quest_id)
+    return RedirectResponse(url=f"/quest/{quest_id}?undone=1", status_code=303)
+
+
 @app.get("/api/state")
 def api_state():
     return storage.state()
@@ -99,7 +166,7 @@ def reset():
 def lock_card_svg():
     s = storage.state()
     p = s["profile"]
-    active = next((q for q in s["quests"] if q["status"] in {"In Progress", "Pending Review"}), s["quests"][0])
+    active = next((q for q in s["quests"] if q["status"] in {"Available", "In Progress", "Pending Review"}), next((q for q in s["quests"] if q["status"] != "Hidden"), s["quests"][0]))
     progress = int((p["xp"] / p["xp_next"]) * 100)
     class_lines = "".join(
         f'<text x="54" y="{610 + i*44}" class="small">{escape(c["name"])} · Lv {c["level"]}</text>'

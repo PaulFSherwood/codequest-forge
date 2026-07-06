@@ -3,28 +3,79 @@
 {% block content %}
 <section class="grid quest-detail-grid">
   <article class="panel wide">
-    <span class="eyebrow">{{ quest.number }} · {{ quest.zone }} · {{ quest.status }}</span>
+    <span class="eyebrow">{{ quest.number }} · {{ quest.zone }} · {{ quest.status }} · {{ quest.type }}</span>
     <h2>{{ quest.name }}</h2>
     <p class="lead">{{ quest.summary }}</p>
     <div class="tags">{% for tag in quest.tags %}<span>{{ tag }}</span>{% endfor %}</div>
+
+    {% if quest.prereq_ids %}
+    <hr />
+    <h3>Unlock Requirements</h3>
+    <p class="muted">Complete the required earlier quest chain before this should count.</p>
+    <ul class="small-list">
+      {% for pre in quest.prereq_ids %}<li><code>{{ pre }}</code></li>{% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if quest.book_ids %}
+    <hr />
+    <h3>Knowledge That Helps</h3>
+    <div class="book-mini-list">
+      {% for bid in quest.book_ids %}
+      {% set book = state.books | selectattr('id','equalto',bid) | list | first %}
+      {% if book %}<a href="/book/{{ book.id }}" class="book-chip {% if book.unlocked %}unlocked{% else %}locked{% endif %}">Lv {{ book.book_level }} · {{ book.concept }} · {{ book.status }} · {{ book.progress }}%</a>{% endif %}
+      {% endfor %}
+    </div>
+    <p class="muted">Books teach the concept. Quests prove you can build with it.</p>
+    {% endif %}
+
     <hr />
     <h3>Completion Requirements</h3>
     <ul class="checklist">
       {% for req in quest.requirements %}<li>{{ req }}</li>{% endfor %}
     </ul>
-    <div class="reward-box"><strong>Reward Gear:</strong> {{ quest.reward_gear }} <span>{{ quest.xp }} XP</span></div>
+
+    {% if quest.mastery_questions %}
+    <hr />
+    <h3>Dungeon Memory Master Test</h3>
+    <p class="muted">Optional honor-system test. Get 8/10 for a Mastery Star, 10/10 for a Gold Mastery Star.</p>
+    <ol class="mastery-list">
+      {% for q in quest.mastery_questions %}<li>{{ q }}</li>{% endfor %}
+    </ol>
+    {% endif %}
+
+    <div class="reward-box"><strong>Reward Gear:</strong> {{ quest.reward_gear or 'None' }} <span>{{ quest.xp }} XP</span></div>
   </article>
 
   <article class="panel">
-    <h3>Submit Proof</h3>
+    <h3>Honor-System Progress</h3>
+    {% if request.query_params.get('completed') %}<p class="notice">Quest completed. XP, gear, level, class progress, and map reveal are recalculated.</p>{% endif %}
     {% if request.query_params.get('submitted') %}<p class="notice">Quest submitted. Status changed to Pending Review.</p>{% endif %}
+    {% if request.query_params.get('undone') %}<p class="notice">Local quest override cleared.</p>{% endif %}
+
+    {% if quest.status == 'Completed' %}
+      <p>This quest is marked complete.</p>
+      <form method="post" action="/quest/{{ quest.id }}/undo" class="proof-form">
+        <button class="button secondary" type="submit">Undo Local Completion</button>
+      </form>
+    {% elif quest.status in ['Available', 'Pending Review'] %}
+      <p class="muted">Build the project, submit proof if you want, then mark it complete yourself.</p>
+      <form method="post" action="/quest/{{ quest.id }}/complete" class="proof-form">
+        <button class="button" type="submit">Mark Complete</button>
+      </form>
+    {% else %}
+      <p class="muted">This quest is not unlocked yet. Finish the earlier chain first.</p>
+    {% endif %}
+
+    <hr />
+    <h3>Submit Proof</h3>
     <form method="post" action="/quest/{{ quest.id }}/submit" class="proof-form">
       <label>GitHub Repository URL <input name="github_url" required placeholder="https://github.com/yourname/project" /></label>
       <label>Screenshot / Video URL <input name="screenshot_url" placeholder="optional" /></label>
       <label>Release Tag <input name="release_tag" placeholder="v1.0.0" /></label>
       <label>Console Output <textarea name="console_output" rows="5" placeholder="paste build/run output if useful"></textarea></label>
       <label>Notes <textarea name="notes" rows="4" placeholder="what you learned, what was hard, what needs review"></textarea></label>
-      <button class="button" type="submit">Submit Quest</button>
+      <button class="button secondary" type="submit">Submit Proof Only</button>
     </form>
     {% if quest.submission %}
     <hr />

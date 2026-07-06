@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% block heading %}Book of Knowledge{% endblock %}
+{% block content %}
+<section class="grid quest-detail-grid">
+  <article class="panel wide">
+    <span class="eyebrow">{{ book.zone }} · Book Level {{ book.book_level }} · {{ book.status }}</span>
+    <h2>{{ book.name }}</h2>
+    <p class="lead">{{ book.summary }}</p>
+
+    {% if request.query_params.get('stage') %}<p class="notice">Marked {{ request.query_params.get('stage')|title }} Me complete.</p>{% endif %}
+    {% if request.query_params.get('help') %}<p class="notice">Help use recorded. {{ book.help_remaining }} teaching charges remain after refresh.</p>{% endif %}
+    {% if request.query_params.get('reset') %}<p class="notice">Book progress reset.</p>{% endif %}
+
+    {% if not book.unlocked %}
+      <div class="reward-box"><strong>Locked:</strong> {{ book.unlock }}</div>
+    {% endif %}
+
+    <div class="book-progress-row">
+      <div class="book-stage-pill {% if book.show_done %}done{% endif %}">1 · Show Me</div>
+      <div class="book-stage-pill {% if book.guide_done %}done{% endif %}">2 · Guide Me</div>
+      <div class="book-stage-pill {% if book.test_done %}done{% endif %}">3 · Test Me</div>
+    </div>
+
+    <hr />
+    <div class="book-stage-card">
+      <div class="stage-head"><h3>{{ book.show_me.title }}</h3>{% if book.show_done %}<span class="status-badge done">Done</span>{% endif %}</div>
+      <p class="muted">{{ book.show_me.explanation }}</p>
+      <pre class="code-card"><code>{{ book.show_me.code }}</code></pre>
+      <ul class="small-list">{% for item in book.show_me.bullets %}<li>{{ item }}</li>{% endfor %}</ul>
+      {% if book.unlocked and not book.show_done %}
+      <form method="post" action="/book/{{ book.id }}/stage"><input type="hidden" name="stage" value="show" /><button class="button secondary" type="submit">Mark Show Me Complete</button></form>
+      {% endif %}
+    </div>
+
+    <hr />
+    <div class="book-stage-card {% if not book.show_done %}dimmed{% endif %}">
+      <div class="stage-head"><h3>{{ book.guide_me.title }}</h3>{% if book.guide_done %}<span class="status-badge done">Done</span>{% endif %}</div>
+      <p class="muted">{{ book.guide_me.explanation }}</p>
+      <pre class="code-card"><code>{{ book.guide_me.code }}</code></pre>
+      <ul class="small-list">{% for item in book.guide_me.prompts %}<li>{{ item }}</li>{% endfor %}</ul>
+      {% if book.unlocked and book.show_done and not book.guide_done %}
+      <form method="post" action="/book/{{ book.id }}/stage"><input type="hidden" name="stage" value="guide" /><button class="button secondary" type="submit">Mark Guide Me Complete</button></form>
+      {% elif book.unlocked and not book.show_done %}<p class="muted">Finish Show Me first.</p>{% endif %}
+    </div>
+
+    <hr />
+    <div class="book-stage-card {% if not book.guide_done %}dimmed{% endif %}">
+      <div class="stage-head"><h3>{{ book.test_me.title }}</h3>{% if book.test_done %}<span class="status-badge done">Mastered</span>{% endif %}</div>
+      <p class="muted">No code shown here. Build from memory. This is the proof side.</p>
+      <h4>Instructions</h4>
+      <ul class="checklist">{% for item in book.test_me.instructions %}<li>{{ item }}</li>{% endfor %}</ul>
+      <h4>Success Checks</h4>
+      <ul class="small-list">{% for item in book.test_me.success_checks %}<li>{{ item }}</li>{% endfor %}</ul>
+      {% if book.unlocked and book.guide_done and not book.test_done %}
+      <form method="post" action="/book/{{ book.id }}/stage"><input type="hidden" name="stage" value="test" /><button class="button" type="submit">Mark Test Me Mastered</button></form>
+      {% elif book.unlocked and not book.guide_done %}<p class="muted">Finish Guide Me first.</p>{% endif %}
+    </div>
+  </article>
+
+  <article class="panel">
+    <h3>Teaching Charges</h3>
+    <p class="muted">Your mom's three-step rule lives here: show it, remove some help, then test it. Use help charges when you need teaching.</p>
+    <div class="big-stat">{{ book.help_remaining }} / {{ book.teaching_charges }}</div>
+    <p class="muted">Help charges remaining</p>
+    {% if book.unlocked and book.help_remaining > 0 %}
+    <form method="post" action="/book/{{ book.id }}/use-help" class="proof-form"><button class="button secondary" type="submit">Use 1 Help Charge</button></form>
+    {% elif book.unlocked %}<p class="muted">No help charges left for this book.</p>{% endif %}
+
+    <hr />
+    <h3>Ask ChatGPT</h3>
+    <p class="muted">Copy this when you want teaching, not the full quest done for you.</p>
+    <textarea class="copy-box" rows="8" readonly>{{ book.ask_for_help }}</textarea>
+
+    <hr />
+    <h3>Unlock Rule</h3>
+    <p>{{ book.unlock }}</p>
+    {% if book.prereq_quest_ids %}<h4>Quest prerequisites</h4><ul class="small-list">{% for qid in book.prereq_quest_ids %}<li><code>{{ qid }}</code></li>{% endfor %}</ul>{% endif %}
+    {% if book.prereq_book_ids %}<h4>Book prerequisites</h4><ul class="small-list">{% for bid in book.prereq_book_ids %}<li><code>{{ bid }}</code></li>{% endfor %}</ul>{% endif %}
+
+    <hr />
+    <form method="post" action="/book/{{ book.id }}/reset" class="proof-form"><button class="button secondary" type="submit">Reset This Book</button></form>
+    <p class="muted">Books do not award XP. Quests level you up.</p>
+  </article>
+</section>
+{% endblock %}

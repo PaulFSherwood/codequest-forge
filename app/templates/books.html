@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block heading %}Books of Knowledge{% endblock %}
+{% block content %}
+<section class="panel">
+  <div class="panel-title"><h3>Concept Library</h3><span class="muted">Show Me → Guide Me → Test Me. Books teach; quests prove.</span></div>
+  <div class="books-grid">
+    {% for book in state.books %}
+    <a class="book-card {% if book.unlocked %}unlocked{% else %}locked{% endif %}" href="/book/{{ book.id }}">
+      <div class="book-cover">{% if book.test_done %}🌟{% elif book.unlocked %}📘{% else %}🔒{% endif %}</div>
+      <div>
+        <small>{{ book.zone }} · Book Level {{ book.book_level }} · {{ book.status }}</small>
+        <strong>{{ book.name }}</strong>
+        <p>{{ book.summary }}</p>
+        <div class="mini-meter"><span style="width: {{ book.progress }}%"></span></div>
+        <div class="tags">{% for tag in book.helps_tags %}<span>{{ tag }}</span>{% endfor %}</div>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
