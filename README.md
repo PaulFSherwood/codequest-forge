@@ -36,18 +36,18 @@ http://127.0.0.1:8000
 
 ## First quest
 
-**Quest 001: Hello C++ Campfire**
+**Quest 001: Add Two Numbers**
 
 Create a repo named:
 
 ```text
-codequest-001-hello-cpp
+cq-001-add-two-numbers
 ```
 
 Requirements:
 
 - Add `main.cpp`.
-- Print your name, quest number, and class goal.
+- Declare two integer variables, add them into a third variable, and print the equation/result.
 - Add a README with build/run commands.
 - Build and run it from a clean terminal.
 - Paste console output into the quest submission.
@@ -106,3 +106,19 @@ Example: 2D Arrays stay locked until loops, arrays, and nested-loop foundations 
 ## v0.5.0
 
 Adds Books of Knowledge training modes: Show Me, Guide Me, and Test Me. Books now track mastery progress, unlock from quests and other mastered books, and include five teaching-help charges.
+
+
+## v0.5.1 Image-backed map
+
+Put your map art here:
+
+```text
+data/images/overworld-map.png
+```
+
+The PNG should be background art only. The app renders dynamic text overlays for player name, level, XP, progress, recent events, and zone labels. Zone label positions are stored in `data/seed.json` as percentage `x` / `y` values.
+
+
+## v0.5.2 Map Note
+
+The overworld image lives at `data/images/overworld-map.png`. Zone labels and player progress are rendered dynamically by `/map` using percentage coordinates in `data/seed.json`.

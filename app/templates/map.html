@@ -1,44 +1,59 @@
 {% extends "base.html" %}
-{% block heading %}Overworld Map{% endblock %}
+{% block heading %}World Map{% endblock %}
 {% block content %}
-<section class="grid map-page">
-  <article class="panel wide">
-    <div class="panel-title"><h3>The Known World</h3><span class="muted">Future zones stay hidden until you earn travel.</span></div>
-    <div class="overworld large">
-      <div class="map-river"></div>
-      <div class="map-mountains one"></div>
-      <div class="map-mountains two"></div>
-      <svg class="map-paths" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M17 68 C26 64, 29 60, 33 58 S43 49,49 44 S57 51,62 58 S72 49,78 48" />
-        <path d="M49 44 C54 35, 58 28, 54 22" />
-        <path d="M49 44 C42 36, 37 31, 35 29 S24 26,20 22" />
-        <path d="M62 58 C70 44, 71 35, 73 28 S80 22,84 18" />
-      </svg>
-      {% for zone in state.zones %}
-      <article id="{{ zone.id }}" class="map-node {{ zone.status|lower }}" style="left: {{ zone.x }}%; top: {{ zone.y }}%;">
-        <span class="node-dot">{% if zone.status == 'Hidden' %}?{% elif zone.status == 'Locked' %}🔒{% else %}{{ loop.index }}{% endif %}</span>
-        <strong>{% if zone.status == 'Hidden' %}Uncharted Region{% else %}{{ zone.name }}{% endif %}</strong>
-        <small>{% if zone.status == 'Hidden' %}Travel to reveal{% else %}Levels {{ zone.range }} · {{ zone.status }}{% endif %}</small>
-      </article>
-      {% endfor %}
-    </div>
-  </article>
+<section class="panel map-only-panel">
+  <div class="panel-title compact-title">
+    <h3>The Known World</h3>
+    <span class="muted">Map art: <code>data/images/overworld-map.png</code>. All player/zone data is rendered by the app.</span>
+  </div>
 
-  <article class="panel wide">
-    <h3>Known Locations</h3>
-    <div class="big-map location-list">
-      {% for zone in state.zones %}
-      <article id="detail-{{ zone.id }}" class="zone-card {{ zone.status|lower }}">
-        <span class="zone-number">{% if zone.status == 'Hidden' %}?{% else %}{{ loop.index }}{% endif %}</span>
-        <div>
-          <small>{% if zone.status == 'Hidden' %}Unknown · Hidden{% else %}Levels {{ zone.range }} · {{ zone.status }}{% endif %}</small>
-          <h3>{% if zone.status == 'Hidden' %}Uncharted Region{% else %}{{ zone.name }}{% endif %}</h3>
-          <p>{% if zone.status == 'Hidden' %}You have heard rumors of harder lands, but they are not on your map yet.{% else %}{{ zone.summary }}{% endif %}</p>
-          <div class="progress tiny"><span style="width: {{ zone.progress }}%"></span></div>
-        </div>
-      </article>
+  <div class="mmo-map-shell" aria-label="CodeQuest Forge overworld map">
+    <img class="mmo-map-image" src="/images/overworld-map.png?v=0.5.2" alt="Overworld map" />
+
+    {% for zone in state.zones %}
+      <a class="mmo-zone-label {{ zone.status|lower }}" href="#zone-{{ zone.id }}" style="left: {{ zone.label_x|default(zone.x) }}%; top: {{ zone.label_y|default(zone.y) }}%; --zone-width: {{ zone.label_width|default(12) }}%;">
+        <strong>{% if zone.status == 'Hidden' %}Unknown Region{% else %}{{ zone.name }}{% endif %}</strong>
+        <span>{% if zone.status == 'Hidden' %}Levels ??–??{% else %}Levels {{ zone.range }}{% endif %}</span>
+        {% if zone.status != 'Hidden' %}<em>{{ zone.status }} · {{ zone.progress }}%</em>{% endif %}
+      </a>
+    {% endfor %}
+
+    <div class="mmo-player-name">{{ state.profile.name }}</div>
+    <div class="mmo-player-level">Level {{ state.profile.level }} · {{ state.profile.current_title }}</div>
+    <div class="mmo-player-xp-bar"><span style="width: {{ (state.profile.xp / state.profile.xp_next * 100)|int }}%"></span></div>
+    <div class="mmo-player-xp-text">XP: {{ state.profile.xp }} / {{ state.profile.xp_next }}</div>
+
+    <div class="mmo-progress-percent">{{ state.progress.overall_percent }}%</div>
+    <div class="mmo-map-stat stat-quests">{{ state.progress.quests_completed }} / {{ state.progress.quests_total }}</div>
+    <div class="mmo-map-stat stat-books">{{ state.progress.books_mastered }} / {{ state.progress.books_total }}</div>
+    <div class="mmo-map-stat stat-dungeons">{{ state.progress.dungeons_cleared }} / {{ state.progress.dungeons_total }}</div>
+    <div class="mmo-map-stat stat-trials">{{ state.progress.trials_cleared }} / {{ state.progress.trials_total }}</div>
+    <div class="mmo-map-location">{{ state.profile.current_zone }}</div>
+
+    <div class="mmo-recent-events">
+      {% for item in state.activity[:3] %}
+        <p>{{ item.icon }} {{ item.kind }}: {{ item.text }}</p>
+      {% else %}
+        <p>No recent events yet.</p>
       {% endfor %}
     </div>
-  </article>
+  </div>
+</section>
+
+<section class="panel zone-data-panel">
+  <div class="panel-title"><h3>Zone Data</h3><span class="muted">Use this list when editing zone names, ranges, and map overlay positions.</span></div>
+  <div class="big-map location-list">
+    {% for zone in state.zones %}
+    <article id="zone-{{ zone.id }}" class="zone-card {{ zone.status|lower }}">
+      <span class="zone-number">{% if zone.status == 'Hidden' %}?{% else %}{{ loop.index }}{% endif %}</span>
+      <div>
+        <small>{% if zone.status == 'Hidden' %}Unknown · Hidden{% else %}Levels {{ zone.range }} · {{ zone.status }} · {{ zone.progress }}%{% endif %}</small>
+        <h3>{% if zone.status == 'Hidden' %}Uncharted Region{% else %}{{ zone.name }}{% endif %}</h3>
+        <p>{% if zone.status == 'Hidden' %}Complete earlier quests to reveal this region.{% else %}{{ zone.summary }}{% endif %}</p>
+        <div class="progress tiny"><span style="width: {{ zone.progress }}%"></span></div>
+      </div>
+    </article>
+    {% endfor %}
+  </div>
 </section>
 {% endblock %}

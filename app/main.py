@@ -12,8 +12,11 @@ from . import storage
 
 ROOT = Path(__file__).resolve().parents[1]
 
-app = FastAPI(title="CodeQuest Forge", version="0.5.0")
+app = FastAPI(title="CodeQuest Forge", version="0.5.2")
+DATA_IMAGES_DIR = ROOT / "data" / "images"
+DATA_IMAGES_DIR.mkdir(parents=True, exist_ok=True)
 app.mount("/static", StaticFiles(directory=ROOT / "app" / "static"), name="static")
+app.mount("/images", StaticFiles(directory=DATA_IMAGES_DIR), name="images")
 templates = Jinja2Templates(directory=ROOT / "app" / "templates")
 
 

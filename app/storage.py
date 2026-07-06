@@ -387,6 +387,24 @@ def state() -> dict[str, Any]:
             b["status"] = "Show Me"
         books.append(b)
     seed["books"] = books
+
+    completed_quests = [q for q in quests if q["status"] == "Completed"]
+    total_quests = len(quests)
+    completed_books = [b for b in books if b.get("status") == "Mastered"]
+    boss_quests = [q for q in quests if q.get("type") == "Boss"]
+    trial_quests = [q for q in quests if q.get("type") == "Trial"]
+    seed["progress"] = {
+        "quests_completed": len(completed_quests),
+        "quests_total": total_quests,
+        "books_mastered": len(completed_books),
+        "books_total": len(books),
+        "dungeons_cleared": len([q for q in boss_quests if q["status"] == "Completed"]),
+        "dungeons_total": len(boss_quests),
+        "trials_cleared": len([q for q in trial_quests if q["status"] == "Completed"]),
+        "trials_total": len(trial_quests),
+        "overall_percent": int(100 * len(completed_quests) / total_quests) if total_quests else 0,
+    }
+
     seed["submissions"] = get_submissions()
     return seed
 

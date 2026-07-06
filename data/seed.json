@@ -329,9 +329,12 @@
       "range": "1-10",
       "status": "Hidden",
       "progress": 0,
-      "x": 17,
-      "y": 68,
-      "summary": "Starting area. Printing, variables, arithmetic, strings, input, decisions, loops, functions, vectors, files, CMake, GitHub proof."
+      "x": 28.6,
+      "y": 16.1,
+      "summary": "Starting area. Printing, variables, arithmetic, strings, input, decisions, loops, functions, vectors, files, CMake, GitHub proof.",
+      "label_x": 28.6,
+      "label_y": 16.1,
+      "label_width": 12.5
     },
     {
       "id": "utility-crossroads",
@@ -339,9 +342,12 @@
       "range": "10-20",
       "status": "Hidden",
       "progress": 0,
-      "x": 27,
-      "y": 62,
-      "summary": "Useful console programs. Menus, validation, random events, small games, logs, CSV, config, and command-line habits."
+      "x": 50.0,
+      "y": 16.8,
+      "summary": "Useful console programs. Menus, validation, random events, small games, logs, CSV, config, and command-line habits.",
+      "label_x": 50.0,
+      "label_y": 16.8,
+      "label_width": 12.5
     },
     {
       "id": "data-homestead",
@@ -349,9 +355,12 @@
       "range": "20-30",
       "status": "Hidden",
       "progress": 0,
-      "x": 39,
-      "y": 55,
-      "summary": "Strings, vectors, arrays, structs, enums, search, sort, records, simple data tools, and cleaner functions."
+      "x": 73.3,
+      "y": 16.8,
+      "summary": "Strings, vectors, arrays, structs, enums, search, sort, records, simple data tools, and cleaner functions.",
+      "label_x": 73.3,
+      "label_y": 16.8,
+      "label_width": 12.5
     },
     {
       "id": "sdl-fields",
@@ -359,9 +368,12 @@
       "range": "30-40",
       "status": "Hidden",
       "progress": 0,
-      "x": 50,
-      "y": 45,
-      "summary": "SDL basics. Windows, renderer, events, rectangles, keyboard, mouse, delta time, and visual debug demos."
+      "x": 18.4,
+      "y": 43.2,
+      "summary": "SDL basics. Windows, renderer, events, rectangles, keyboard, mouse, delta time, and visual debug demos.",
+      "label_x": 18.4,
+      "label_y": 43.2,
+      "label_width": 12.5
     },
     {
       "id": "gameplay-garrison",
@@ -369,9 +381,12 @@
       "range": "40-50",
       "status": "Hidden",
       "progress": 0,
-      "x": 62,
-      "y": 56,
-      "summary": "Playable game systems. Game states, collision, spawning, score, animation, save files, and a complete small game."
+      "x": 61.4,
+      "y": 45.4,
+      "summary": "Playable game systems. Game states, collision, spawning, score, animation, save files, and a complete small game.",
+      "label_x": 61.4,
+      "label_y": 45.4,
+      "label_width": 12.5
     },
     {
       "id": "ecs-catacombs",
@@ -379,9 +394,12 @@
       "range": "50-60",
       "status": "Hidden",
       "progress": 0,
-      "x": 74,
-      "y": 47,
-      "summary": "ECS architecture. Entity IDs, components, systems, storage, inspectors, spawn/despawn, and data-oriented gameplay demos."
+      "x": 80.4,
+      "y": 50.4,
+      "summary": "ECS architecture. Entity IDs, components, systems, storage, inspectors, spawn/despawn, and data-oriented gameplay demos.",
+      "label_x": 80.4,
+      "label_y": 50.4,
+      "label_width": 12.5
     },
     {
       "id": "toolmakers-valley",
@@ -389,9 +407,12 @@
       "range": "60-70",
       "status": "Hidden",
       "progress": 0,
-      "x": 67,
-      "y": 30,
-      "summary": "Engineering tools. Logging, config, developer console, profiling, test harnesses, install scripts, and release discipline."
+      "x": 12.3,
+      "y": 69.4,
+      "summary": "Engineering tools. Logging, config, developer console, profiling, test harnesses, install scripts, and release discipline.",
+      "label_x": 12.3,
+      "label_y": 69.4,
+      "label_width": 12.0
     },
     {
       "id": "simulation-highlands",
@@ -399,9 +420,12 @@
       "range": "70-80",
       "status": "Hidden",
       "progress": 0,
-      "x": 53,
-      "y": 22,
-      "summary": "Simulation discipline. Fixed timestep, deterministic input, replay, telemetry, health panels, fault injection, and time controls."
+      "x": 35.4,
+      "y": 69.5,
+      "summary": "Simulation discipline. Fixed timestep, deterministic input, replay, telemetry, health panels, fault injection, and time controls.",
+      "label_x": 35.4,
+      "label_y": 69.5,
+      "label_width": 12.5
     },
     {
       "id": "military-systems-range",
@@ -409,9 +433,12 @@
       "range": "80-90",
       "status": "Hidden",
       "progress": 0,
-      "x": 36,
-      "y": 26,
-      "summary": "Military/sustainment systems. Ada/C++ style, message parsing, bus monitors, HIL mock devices, Linux diagnostics, and safety checks."
+      "x": 54.0,
+      "y": 69.4,
+      "summary": "Military/sustainment systems. Ada/C++ style, message parsing, bus monitors, HIL mock devices, Linux diagnostics, and safety checks.",
+      "label_x": 54.0,
+      "label_y": 69.4,
+      "label_width": 13.0
     },
     {
       "id": "senior-citadel",
@@ -419,9 +446,12 @@
       "range": "90-100",
       "status": "Hidden",
       "progress": 0,
-      "x": 21,
-      "y": 31,
-      "summary": "Senior-level integration. Architecture, tests, performance, docs, refactoring, packaging, and final capstone workbench."
+      "x": 82.0,
+      "y": 73.0,
+      "summary": "Senior-level integration. Architecture, tests, performance, docs, refactoring, packaging, and final capstone workbench.",
+      "label_x": 82.0,
+      "label_y": 73.0,
+      "label_width": 12.5
     }
   ],
   "quests": [
@@ -9441,5 +9471,12 @@
         ]
       }
     }
-  ]
+  ],
+  "map": {
+    "image": "data/images/overworld-map.png",
+    "native_width": 1577,
+    "native_height": 997,
+    "overlay_units": "percent",
+    "note": "Zone labels use label_x/label_y percentage coordinates and render over the blank plaque art."
+  }
 }
