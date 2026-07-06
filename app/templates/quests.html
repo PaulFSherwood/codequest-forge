@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block heading %}Quest Board{% endblock %}
+{% block content %}
+<section class="panel">
+  <div class="panel-title"><h3>Available and Known Quests</h3><span class="muted">Hidden quests reveal later.</span></div>
+  <div class="quest-list full">
+    {% for quest in state.quests %}
+    {% if quest.status == 'Hidden' %}
+    <div class="quest-card hidden-card">
+      <div class="quest-icon">?</div>
+      <div>
+        <small>Unknown · Undiscovered</small>
+        <strong>Hidden Quest</strong>
+        <p>This quest belongs to a zone you have not reached yet.</p>
+      </div>
+      <div class="quest-status"><b>??? XP</b><span>Hidden</span></div>
+    </div>
+    {% else %}
+    <a class="quest-card {{ quest.status|lower }}" href="/quest/{{ quest.id }}">
+      <div class="quest-icon">{% if 'Boss' in quest.tags %}👹{% elif 'Linux' in quest.tags %}⌨️{% else %}🎯{% endif %}</div>
+      <div>
+        <small>{{ quest.number }} · {{ quest.zone }} · Recommended Level {{ quest.recommended_level }}</small>
+        <strong>{{ quest.name }}</strong>
+        <p>{{ quest.summary }}</p>
+        <div class="tags">{% for tag in quest.tags %}<span>{{ tag }}</span>{% endfor %}</div>
+      </div>
+      <div class="quest-status"><b>{{ quest.xp }} XP</b><span>{{ quest.status }}</span><div class="progress tiny"><span style="width: {{ quest.progress }}%"></span></div></div>
+    </a>
+    {% endif %}
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

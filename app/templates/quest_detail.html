@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block heading %}Quest Detail{% endblock %}
+{% block content %}
+<section class="grid quest-detail-grid">
+  <article class="panel wide">
+    <span class="eyebrow">{{ quest.number }} · {{ quest.zone }} · {{ quest.status }}</span>
+    <h2>{{ quest.name }}</h2>
+    <p class="lead">{{ quest.summary }}</p>
+    <div class="tags">{% for tag in quest.tags %}<span>{{ tag }}</span>{% endfor %}</div>
+    <hr />
+    <h3>Completion Requirements</h3>
+    <ul class="checklist">
+      {% for req in quest.requirements %}<li>{{ req }}</li>{% endfor %}
+    </ul>
+    <div class="reward-box"><strong>Reward Gear:</strong> {{ quest.reward_gear }} <span>{{ quest.xp }} XP</span></div>
+  </article>
+
+  <article class="panel">
+    <h3>Submit Proof</h3>
+    {% if request.query_params.get('submitted') %}<p class="notice">Quest submitted. Status changed to Pending Review.</p>{% endif %}
+    <form method="post" action="/quest/{{ quest.id }}/submit" class="proof-form">
+      <label>GitHub Repository URL <input name="github_url" required placeholder="https://github.com/yourname/project" /></label>
+      <label>Screenshot / Video URL <input name="screenshot_url" placeholder="optional" /></label>
+      <label>Release Tag <input name="release_tag" placeholder="v1.0.0" /></label>
+      <label>Console Output <textarea name="console_output" rows="5" placeholder="paste build/run output if useful"></textarea></label>
+      <label>Notes <textarea name="notes" rows="4" placeholder="what you learned, what was hard, what needs review"></textarea></label>
+      <button class="button" type="submit">Submit Quest</button>
+    </form>
+    {% if quest.submission %}
+    <hr />
+    <h3>Latest Submission</h3>
+    <p><a href="{{ quest.submission.github_url }}">{{ quest.submission.github_url }}</a></p>
+    <p>Status: <strong>{{ quest.submission.status }}</strong></p>
+    {% endif %}
+  </article>
+</section>
+{% endblock %}

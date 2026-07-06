@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block heading %}Class Hall{% endblock %}
+{% block content %}
+<section class="grid two-col">
+  {% for cls in state.classes %}
+  <article class="panel class-detail">
+    <span class="class-icon big">{{ cls.icon }}</span>
+    <span class="eyebrow">{{ cls.kind }}</span>
+    <h2>{{ cls.name }}</h2>
+    <p>{{ cls.summary }}</p>
+    <div class="xp-line"><span>Level {{ cls.level }}</span><span>{{ "{:,}".format(cls.xp) }} / {{ "{:,}".format(cls.xp_next) }} XP</span></div>
+    <div class="progress"><span style="width: {{ (cls.xp / cls.xp_next * 100)|round|int }}%"></span></div>
+  </article>
+  {% endfor %}
+  <article class="panel wide">
+    <h3>Military Systems Dev Skill Focus</h3>
+    <div class="mini-skill-list">
+    {% for skill in state.class_skills %}
+      <div class="class-skill {{ skill.color }}"><span class="skill-icon">{{ skill.icon }}</span><div><strong>{{ skill.name }}</strong><small>Lv. {{ skill.level }}</small><div class="progress tiny"><span style="width: {{ skill.value }}%"></span></div></div><b>{{ skill.value }}%</b></div>
+    {% endfor %}
+    </div>
+  </article>
+</section>
+{% endblock %}

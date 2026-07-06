@@ -1,0 +1,250 @@
+{
+  "profile": {
+    "name": "Sherwood",
+    "epithet": "The Systems Engineer",
+    "level": 1,
+    "xp": 0,
+    "xp_next": 500,
+    "current_title": "New Spawn",
+    "next_title": "C++ Recruit",
+    "next_title_level": 10,
+    "streak_days": 0,
+    "today_goal_minutes": 0,
+    "today_goal_total": 45,
+    "main_goal": "Senior C++ / Systems Engineer",
+    "current_zone": "The Compiler Yard",
+    "start_quest_id": "hello-cpp-campfire"
+  },
+  "titles": [
+    {"level": 1, "range": "1-9", "title": "New Spawn", "trial": "Learn the controls: create tiny C++ repos, build them cleanly, and prove them with GitHub."},
+    {"level": 10, "range": "10-19", "title": "C++ Recruit", "trial": "Ship a clean CMake C++ utility with README, screenshot/output proof, and release tag."},
+    {"level": 20, "range": "20-29", "title": "SDL Apprentice", "trial": "Ship an SDL app with window, rendering, input, delta time, and clean shutdown."},
+    {"level": 30, "range": "30-39", "title": "Junior Gameplay Engineer", "trial": "Build a complete SDL mini-game with enemies, collision, score, restart, README, screenshot/video, and release."},
+    {"level": 40, "range": "40-49", "title": "ECS Engineer", "trial": "Build an ECS sandbox with entity inspector, spawn/destroy, components, systems, and debug output."},
+    {"level": 50, "range": "50-59", "title": "Tools Engineer", "trial": "Build an internal developer tool with persistence, logs, useful UI, and clean release."},
+    {"level": 60, "range": "60-69", "title": "Simulation Engineer", "trial": "Build a deterministic simulation with fixed timestep, pause, step-frame, replay, and telemetry."},
+    {"level": 70, "range": "70-79", "title": "Senior C++ Engineer", "trial": "Ship a polished C++/SDL/ECS project with clean architecture, tests, tools, docs, and release."},
+    {"level": 80, "range": "80-89", "title": "Engine Architect", "trial": "Build a modular engine core with asset pipeline, profiling, and stable APIs."},
+    {"level": 90, "range": "90-99", "title": "Staff Systems Builder", "trial": "Build an integrated multi-system application with tools, telemetry, configs, and strong docs."},
+    {"level": 100, "range": "100", "title": "Grand Marshal of the Build", "trial": "Complete the Grandmaster Capstone."}
+  ],
+  "classes": [
+    {"id": "military", "name": "Military Systems Dev", "kind": "Primary Class", "level": 1, "xp": 0, "xp_next": 500, "icon": "⚔️", "summary": "Ada, C++, Linux, GUIs, telemetry, message parsing, simulation, fault injection, sustainment."},
+    {"id": "game", "name": "Game Dev", "kind": "Secondary Class", "level": 1, "xp": 0, "xp_next": 500, "icon": "🎮", "summary": "SDL, rendering, input, collision, ECS, animation, audio, game loops, playable demos."},
+    {"id": "linux", "name": "Linux Toolsmith", "kind": "Profession", "level": 1, "xp": 0, "xp_next": 500, "icon": "⌨️", "summary": "Bash, Python, /proc, /sys, system inventory, logs, monitors, install scripts."}
+  ],
+  "skills": [
+    {"name": "C++", "value": 0},
+    {"name": "Build Systems", "value": 0},
+    {"name": "GitHub Proof", "value": 0},
+    {"name": "SDL", "value": 0},
+    {"name": "ECS", "value": 0},
+    {"name": "Ada", "value": 0},
+    {"name": "Linux", "value": 0},
+    {"name": "Simulation", "value": 0}
+  ],
+  "class_skills": [
+    {"name": "C++ Fundamentals", "level": 1, "value": 0, "color": "green", "icon": "</>"},
+    {"name": "Clean Builds", "level": 1, "value": 0, "color": "blue", "icon": "▣"},
+    {"name": "GitHub Proof", "level": 1, "value": 0, "color": "gold", "icon": "⌁"},
+    {"name": "SDL Basics", "level": 1, "value": 0, "color": "purple", "icon": "▤"},
+    {"name": "Linux Tools", "level": 1, "value": 0, "color": "cyan", "icon": "⌨"},
+    {"name": "Military Systems", "level": 1, "value": 0, "color": "red", "icon": "⚠"}
+  ],
+  "zones": [
+    {"id": "compiler-yard", "name": "The Compiler Yard", "range": "1-10", "status": "Current", "progress": 0, "x": 17, "y": 68, "summary": "The starting yard. Learn clean folders, CMake, tiny C++ programs, README proof, and GitHub releases."},
+    {"id": "broken-build-mine", "name": "The Broken Build Mine", "range": "8-10", "status": "Locked", "progress": 0, "x": 33, "y": 58, "summary": "First dungeon. Rooms teach clean builds. Boss proves you can clone, build, run, and release."},
+    {"id": "sdl-fields", "name": "SDL Fields", "range": "10-20", "status": "Hidden", "progress": 0, "x": 49, "y": 44, "summary": "Window, renderer, input events, textures, delta time."},
+    {"id": "input-marsh", "name": "The Input Marsh", "range": "20-30", "status": "Hidden", "progress": 0, "x": 62, "y": 58, "summary": "Capture and control input from keyboard, mouse, and controllers. Bind actions. Save configs."},
+    {"id": "goblin-arena", "name": "Goblin Arena", "range": "28-30", "status": "Hidden", "progress": 0, "x": 78, "y": 48, "summary": "Junior title dungeon. Prove you can build a complete SDL mini-game."},
+    {"id": "ecs-catacombs", "name": "ECS Catacombs", "range": "30-40", "status": "Hidden", "progress": 0, "x": 73, "y": 28, "summary": "Entity IDs, components, systems, storage, debug inspectors."},
+    {"id": "message-bus-depot", "name": "Message Bus Depot", "range": "35-45", "status": "Hidden", "progress": 0, "x": 54, "y": 22, "summary": "Message parsing, fake bus traffic, telemetry tables, invalid-message detection."},
+    {"id": "toolmaker-valley", "name": "Toolmaker's Valley", "range": "45-55", "status": "Hidden", "progress": 0, "x": 35, "y": 29, "summary": "Debug panels, config tools, log viewers, release helpers."},
+    {"id": "simulation-highlands", "name": "Simulation Highlands", "range": "55-70", "status": "Hidden", "progress": 0, "x": 20, "y": 22, "summary": "Fixed timestep, replay, telemetry, deterministic behavior, fault scenarios."},
+    {"id": "senior-citadel", "name": "Senior Citadel", "range": "70+", "status": "Hidden", "progress": 0, "x": 84, "y": 18, "summary": "Senior-level capstone territory. Large integrated projects only."}
+  ],
+  "quests": [
+    {
+      "id": "hello-cpp-campfire",
+      "number": "001",
+      "name": "Hello C++ Campfire",
+      "zone": "The Compiler Yard",
+      "status": "Available",
+      "progress": 0,
+      "xp": 100,
+      "recommended_level": 1,
+      "tags": ["C++", "Starter", "GitHub"],
+      "summary": "Create your first proof repo: a tiny C++ program that prints a useful status message and builds cleanly.",
+      "requirements": [
+        "Create a GitHub repo named codequest-001-hello-cpp",
+        "Add main.cpp",
+        "Print your name, quest number, and current class goal",
+        "Add a README with build/run commands",
+        "Build and run it from a clean terminal",
+        "Paste console output into the quest submission"
+      ],
+      "reward_gear": "Wooden Pointer"
+    },
+    {
+      "id": "clean-cmake-outpost",
+      "number": "002",
+      "name": "Clean CMake Outpost",
+      "zone": "The Compiler Yard",
+      "status": "Locked",
+      "progress": 0,
+      "xp": 150,
+      "recommended_level": 2,
+      "tags": ["C++", "CMake", "Build"],
+      "summary": "Turn the tiny C++ app into a clean CMake project that builds from a fresh clone.",
+      "requirements": [
+        "Use CMakeLists.txt",
+        "Build into a build/ folder",
+        "No generated files committed",
+        "README includes mkdir build, cmake .., make, run command",
+        "Submit GitHub repo and console output"
+      ],
+      "reward_gear": "Ring of Clean Build"
+    },
+    {
+      "id": "argument-goblin",
+      "number": "003",
+      "name": "Argument Goblin",
+      "zone": "The Compiler Yard",
+      "status": "Locked",
+      "progress": 0,
+      "xp": 150,
+      "recommended_level": 3,
+      "tags": ["C++", "CLI", "Utility"],
+      "summary": "Add command line arguments so your program can run in different modes.",
+      "requirements": [
+        "Accept --name",
+        "Accept --class",
+        "Accept --help",
+        "Handle bad input without crashing",
+        "README shows examples",
+        "Submit console output for each mode"
+      ],
+      "reward_gear": "Command Line Dagger"
+    },
+    {
+      "id": "file-scroll-cache",
+      "number": "004",
+      "name": "File Scroll Cache",
+      "zone": "The Compiler Yard",
+      "status": "Locked",
+      "progress": 0,
+      "xp": 200,
+      "recommended_level": 4,
+      "tags": ["C++", "Files", "Persistence"],
+      "summary": "Read and write a tiny progress file so the app remembers something between runs.",
+      "requirements": [
+        "Write progress.json or progress.txt",
+        "Load it on startup",
+        "Update a value after running",
+        "Handle missing file",
+        "README explains where the file is saved",
+        "Submit before/after console output"
+      ],
+      "reward_gear": "File Scroll Satchel"
+    },
+    {
+      "id": "broken-build-mine-boss",
+      "number": "005",
+      "name": "Dungeon Boss: The Broken Build Mine",
+      "zone": "The Broken Build Mine",
+      "status": "Locked",
+      "progress": 0,
+      "xp": 400,
+      "recommended_level": 8,
+      "tags": ["Boss", "C++", "CMake", "Release"],
+      "summary": "Ship a clean C++ utility from a fresh clone with README, release tag, and console proof.",
+      "requirements": [
+        "Fresh clone works",
+        "CMake build works",
+        "Program has --help",
+        "Program reads/writes a small file",
+        "README is clear",
+        "GitHub release tag v1.0.0",
+        "Submit repo link and console output"
+      ],
+      "reward_gear": "C++ Recruit Medal"
+    },
+    {
+      "id": "sdl-window-gate",
+      "number": "011",
+      "name": "SDL Window Gate",
+      "zone": "SDL Fields",
+      "status": "Hidden",
+      "progress": 0,
+      "xp": 250,
+      "recommended_level": 10,
+      "tags": ["SDL", "Window", "C++"],
+      "summary": "Open an SDL window, clear the screen, handle quit, and close cleanly.",
+      "requirements": ["SDL window opens", "Clear screen to a color", "ESC or X closes window", "CMake build", "README", "Screenshot", "Release tag"],
+      "reward_gear": "SDL Blade"
+    },
+    {
+      "id": "keyboard-event-logger",
+      "number": "021",
+      "name": "Keyboard Event Logger",
+      "zone": "The Input Marsh",
+      "status": "Hidden",
+      "progress": 0,
+      "xp": 350,
+      "recommended_level": 20,
+      "tags": ["SDL", "Input", "Logging"],
+      "summary": "Build an SDL app that logs every key press and release with keycode, scancode, and modifier state.",
+      "requirements": ["Show key pressed and released", "Display SDL_Keycode", "Display SDL_Scancode", "Display modifier keys", "Track held keys", "Show last 20 events", "README", "Release tag"],
+      "reward_gear": "Gauntlets of Keyboard State"
+    },
+    {
+      "id": "bus-monitor-demo",
+      "number": "041",
+      "name": "Bus Monitor Demo",
+      "zone": "Message Bus Depot",
+      "status": "Hidden",
+      "progress": 0,
+      "xp": 800,
+      "recommended_level": 35,
+      "tags": ["Military", "Bus", "GUI", "Telemetry"],
+      "summary": "Create fake message traffic, parse messages, detect invalid messages, and show traffic in a GUI table.",
+      "requirements": ["Message struct", "Serialize to bytes", "Parse bytes into fields", "Invalid message detection", "GUI table", "Log export", "README and release"],
+      "reward_gear": "Bus Analyzer"
+    },
+    {
+      "id": "linux-inventory-vault",
+      "number": "L09",
+      "name": "Linux Inventory Vault",
+      "zone": "Linux Toolsmith",
+      "status": "Available",
+      "progress": 0,
+      "xp": 500,
+      "recommended_level": 5,
+      "tags": ["Linux", "Python", "System Info"],
+      "summary": "Optional profession quest: report CPU, RAM, disks, serial numbers where available, GPU, network interfaces, and export JSON.",
+      "requirements": ["CPU info", "RAM info", "Disk list", "Serial numbers where available", "GPU info", "Network interfaces", "JSON export", "README and release"],
+      "reward_gear": "Hardware ID Ring"
+    }
+  ],
+  "gear": [
+    {"name": "Wooden Pointer", "slot": "Weapon", "rarity": "Common", "icon": "🪵", "equipped": false, "locked": true, "earned_from": "Hello C++ Campfire", "effect": "Unlocks the next beginner C++ quest."},
+    {"name": "Ring of Clean Build", "slot": "Ring", "rarity": "Rare", "icon": "💍", "equipped": false, "locked": true, "earned_from": "Clean CMake Outpost", "effect": "Unlocks build command cards and clean-clone proof checklist."},
+    {"name": "Command Line Dagger", "slot": "Weapon", "rarity": "Rare", "icon": "🗡️", "equipped": false, "locked": true, "earned_from": "Argument Goblin", "effect": "Unlocks command-line utility quests."},
+    {"name": "File Scroll Satchel", "slot": "Trinket", "rarity": "Rare", "icon": "📜", "equipped": false, "locked": true, "earned_from": "File Scroll Cache", "effect": "Unlocks persistence and save/load quests."},
+    {"name": "C++ Recruit Medal", "slot": "Chest", "rarity": "Epic", "icon": "🏅", "equipped": false, "locked": true, "earned_from": "The Broken Build Mine", "effect": "Unlocks SDL Fields and the C++ Recruit title."},
+    {"name": "SDL Blade", "slot": "Weapon", "rarity": "Rare", "icon": "🗡️", "equipped": false, "locked": true, "earned_from": "SDL Window Gate", "effect": "Unlocks SDL rendering and input quest chains."},
+    {"name": "Command Window Hotkey", "slot": "Trinket", "rarity": "Epic", "icon": "⌘", "equipped": false, "locked": true, "earned_from": "SDL Input Test Lab", "effect": "Unlocks Ctrl+K command palette as earned loot."},
+    {"name": "Bus Analyzer", "slot": "Offhand", "rarity": "Epic", "icon": "📟", "equipped": false, "locked": true, "earned_from": "Message Bus Depot", "effect": "Unlocks message parsing, 1553-style scheduler, and bus-monitor quests."},
+    {"name": "Staff of Deterministic Time", "slot": "Weapon", "rarity": "Legendary", "icon": "🪄", "equipped": false, "locked": true, "earned_from": "Deterministic Time Tower", "effect": "Unlocks replay, pause-step, telemetry, and deterministic simulation trials."}
+  ],
+  "activity": [
+    {"kind": "New Campaign", "text": "CodeQuest Forge started", "reward": "No XP yet. First proof required.", "when": "Today", "icon": "🕯️"}
+  ],
+  "veteran_deeds": [
+    {"name": "ThinMon", "summary": "Can later become a proven Linux Toolsmith quest if moved into a clean repo with README, screenshot, and release."},
+    {"name": "MBIL Prototype", "summary": "Can later become a Military Systems Dev capstone path with bus, telemetry, faults, and simulation proof."},
+    {"name": "PlantSimulator", "summary": "Can later become a Web Tool Dev / Systems Tool quest chain."},
+    {"name": "TrinityCore Launcher", "summary": "Can later become a Toolmaker quest with build/run panels and release notes."},
+    {"name": "Linux Utility Scripts", "summary": "Can later become Linux Toolsmith dungeon proof."}
+  ]
+}

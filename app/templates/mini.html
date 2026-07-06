@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block heading %}Mini Progress View{% endblock %}
+{% block content %}
+{% set start_quest = state.quests | selectattr('id', 'equalto', state.profile.start_quest_id) | list | first %}
+<section class="mini-wrap">
+  <article class="mini-phone">
+    <div class="mini-header">
+      <div class="portrait small">🧔🏻‍♂️</div>
+      <div><h2>{{ state.profile.name }}</h2><p>{{ state.profile.epithet }}</p></div>
+      <div class="shield">🛡️</div>
+    </div>
+    <div class="mini-level-card">
+      <div class="level-circle"><span>LEVEL</span><strong>{{ state.profile.level }}</strong></div>
+      <div>
+        <span class="eyebrow">{{ state.profile.current_title }}</span>
+        <h3>XP: {{ "{:,}".format(state.profile.xp) }} / {{ "{:,}".format(state.profile.xp_next) }}</h3>
+        <div class="progress"><span style="width: {{ (state.profile.xp / state.profile.xp_next * 100)|round|int }}%"></span></div>
+        <p>{{ state.profile.xp_next - state.profile.xp }} XP to next level</p>
+      </div>
+    </div>
+    <div class="mini-card">
+      <span class="eyebrow">Next Title · Level {{ state.profile.next_title_level }}</span>
+      <h3>{{ state.profile.next_title }}</h3>
+      <ul>
+        <li>Complete Compiler Yard quests</li>
+        <li>Defeat The Broken Build Mine</li>
+        <li>Fresh clone builds clean</li>
+        <li>README & release tag</li>
+      </ul>
+      <div class="progress gold"><span style="width: 0%"></span></div>
+      <p class="right">0 / 5 Completed</p>
+    </div>
+    <div class="mini-card">
+      <div class="panel-title"><h3>Current Quest</h3><a href="/quest/{{ start_quest.id }}">Open ›</a></div>
+      <strong>{{ start_quest.name }}</strong>
+      <p>{{ start_quest.summary }}</p>
+    </div>
+    <div class="mini-card">
+      <div class="panel-title"><h3>Class Progress</h3><a href="/classes">Military Systems Dev ›</a></div>
+      {% for skill in state.class_skills %}
+      <div class="class-skill {{ skill.color }}"><span class="skill-icon">{{ skill.icon }}</span><div><strong>{{ skill.name }}</strong><small>Lv. {{ skill.level }}</small><div class="progress tiny"><span style="width: {{ skill.value }}%"></span></div></div><b>{{ skill.value }}%</b></div>
+      {% endfor %}
+    </div>
+    <div class="mini-bottom">
+      <div><span class="eyebrow">Daily Streak</span><strong>🔥 {{ state.profile.streak_days }} days</strong></div>
+      <div><span class="eyebrow">Next Reward</span><strong>🪵 Wooden Pointer</strong></div>
+    </div>
+  </article>
+  <aside class="panel mini-help">
+    <h3>Lock Screen Card</h3>
+    <p>This page is meant to be a small reminder view. The app also generates an SVG card you can open, screenshot, or save.</p>
+    <a class="button" href="/lock-card.svg">Open Lock Card SVG</a>
+  </aside>
+</section>
+{% endblock %}

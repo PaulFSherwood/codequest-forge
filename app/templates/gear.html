@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block heading %}Gear Vault{% endblock %}
+{% block content %}
+<section class="grid gear-list-grid">
+  {% for item in state.gear %}
+  <article class="panel gear-detail {{ item.rarity|lower }} {% if item.locked %}locked-gear{% endif %}">
+    <div class="gear-big-icon">{{ item.icon }}</div>
+    <div>
+      <span class="eyebrow">{{ item.slot }} · {{ item.rarity }}{% if item.equipped %} · Equipped{% elif item.locked %} · Locked{% endif %}</span>
+      <h3>{{ item.name }}</h3>
+      <p>{{ item.effect }}</p>
+      <small>Earned from: {{ item.earned_from }}</small>
+    </div>
+  </article>
+  {% endfor %}
+</section>
+{% endblock %}

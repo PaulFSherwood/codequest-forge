@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}CodeQuest Forge{% endblock %}</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="/">
+        <div class="brand-mark">⚔</div>
+        <div>
+          <strong>CodeQuest</strong>
+          <span>Forge</span>
+        </div>
+      </a>
+      <nav>
+        <a href="/" class="{% if request.url.path == '/' %}active{% endif %}">🏰 Dashboard</a>
+        <a href="/map" class="{% if request.url.path == '/map' %}active{% endif %}">🗺️ World Map</a>
+        <a href="/quests" class="{% if request.url.path.startswith('/quest') or request.url.path == '/quests' %}active{% endif %}">📜 Quests</a>
+        <a href="/classes" class="{% if request.url.path == '/classes' %}active{% endif %}">🛡️ Classes</a>
+        <a href="/gear" class="{% if request.url.path == '/gear' %}active{% endif %}">🎒 Gear</a>
+        <a href="/mini" class="{% if request.url.path == '/mini' %}active{% endif %}">📱 Mini View</a>
+      </nav>
+      <div class="side-card">
+        <span class="eyebrow">Current Grind</span>
+        <strong>{{ state.profile.current_title }}</strong>
+        <p>Next: {{ state.profile.next_title }} at Level {{ state.profile.next_title_level }}</p>
+      </div>
+    </aside>
+
+    <main>
+      <header class="topbar">
+        <div>
+          <span class="eyebrow">Build. Ship. Level Up.</span>
+          <h1>{% block heading %}Dashboard{% endblock %}</h1>
+        </div>
+        <div class="player-pill">
+          <span class="avatar">🧔🏻‍♂️</span>
+          <div>
+            <strong>{{ state.profile.name }}</strong>
+            <span>Level {{ state.profile.level }} · {{ state.profile.current_title }}</span>
+          </div>
+        </div>
+      </header>
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  <div id="command-palette" class="command-palette hidden" role="dialog" aria-modal="true">
+    <div class="command-box">
+      <div class="command-header">
+        <strong>Command Window</strong>
+        <button type="button" id="close-command">Esc</button>
+      </div>
+      <input id="command-input" type="text" placeholder="Type a command or quest name..." />
+      <div class="command-list">
+        <a href="/quests">Open Quest Board</a>
+        <a href="/map">Open World Map</a>
+        <a href="/gear">View Gear</a>
+        <a href="/mini">Open Mini Progress View</a>
+        <a href="/lock-card.svg">Open Lock Screen SVG</a>
+      </div>
+      <p class="muted">Ctrl+K opens this. Open for prototype testing. Later this becomes earned boss loot.</p>
+    </div>
+  </div>
+  <script src="/static/app.js"></script>
+</body>
+</html>

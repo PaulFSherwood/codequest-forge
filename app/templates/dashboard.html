@@ -1,0 +1,112 @@
+{% extends "base.html" %}
+{% block heading %}Campaign Dashboard{% endblock %}
+{% block content %}
+{% set start_quest = state.quests | selectattr('id', 'equalto', state.profile.start_quest_id) | list | first %}
+{% set current_zone = state.zones | selectattr('status', 'equalto', 'Current') | list | first %}
+<section class="grid dashboard-grid">
+  <article class="panel hero-panel">
+    <div class="portrait">🧔🏻‍♂️</div>
+    <div>
+      <span class="eyebrow">Goal: {{ state.profile.main_goal }}</span>
+      <h2>{{ state.profile.name }}</h2>
+      <p class="title-text">Level {{ state.profile.level }} · {{ state.profile.current_title }}</p>
+      <div class="xp-line"><span>XP {{ "{:,}".format(state.profile.xp) }} / {{ "{:,}".format(state.profile.xp_next) }}</span><span>{{ state.profile.xp_next - state.profile.xp }} XP to next level</span></div>
+      <div class="progress"><span style="width: {{ (state.profile.xp / state.profile.xp_next * 100)|round|int }}%"></span></div>
+    </div>
+  </article>
+
+  <article class="panel start-panel">
+    <span class="eyebrow">Start Here</span>
+    <h3>First Quest: {{ start_quest.name }}</h3>
+    <p>{{ start_quest.summary }}</p>
+    <ol class="start-list">
+      <li>Open the first quest.</li>
+      <li>Build the tiny GitHub repo.</li>
+      <li>Submit the link and console output.</li>
+    </ol>
+    <a class="button" href="/quest/{{ start_quest.id }}">Begin Quest 001</a>
+  </article>
+
+  <article class="panel map-panel wide">
+    <div class="panel-title"><h3>Overworld Map</h3><a href="/map">Travel →</a></div>
+    <div class="overworld compact">
+      <div class="map-river"></div>
+      <svg class="map-paths" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M17 68 C26 64, 29 60, 33 58 S43 49,49 44 S57 51,62 58" />
+      </svg>
+      {% for zone in state.zones %}
+      <a href="/map#{{ zone.id }}" class="map-node {{ zone.status|lower }}" style="left: {{ zone.x }}%; top: {{ zone.y }}%;">
+        <span class="node-dot">{% if zone.status == 'Hidden' %}?{% elif zone.status == 'Locked' %}🔒{% else %}{{ loop.index }}{% endif %}</span>
+        <strong>{% if zone.status == 'Hidden' %}Uncharted{% else %}{{ zone.name }}{% endif %}</strong>
+        <small>{{ zone.status }}</small>
+      </a>
+      {% endfor %}
+    </div>
+    <div class="current-zone">
+      <strong>Current Zone: {{ current_zone.name }}</strong>
+      <p>{{ current_zone.summary }}</p>
+    </div>
+  </article>
+
+  <article class="panel classes-panel">
+    <div class="panel-title"><h3>Class Path</h3><a href="/classes">Details →</a></div>
+    {% for cls in state.classes %}
+    <div class="class-row">
+      <span class="class-icon">{{ cls.icon }}</span>
+      <div>
+        <small>{{ cls.kind }}</small>
+        <strong>{{ cls.name }}</strong>
+        <div class="progress tiny"><span style="width: {{ (cls.xp / cls.xp_next * 100)|round|int }}%"></span></div>
+      </div>
+      <b>Lv {{ cls.level }}</b>
+    </div>
+    {% endfor %}
+  </article>
+
+  <article class="panel wide">
+    <div class="panel-title"><h3>Starting Quests</h3><a href="/quests">View All →</a></div>
+    <div class="quest-list">
+      {% for quest in state.quests if quest.status != 'Hidden' %}
+      {% if loop.index <= 5 %}
+      <a class="quest-card {{ quest.status|lower }}" href="/quest/{{ quest.id }}">
+        <div class="quest-icon">{% if 'Boss' in quest.tags %}👹{% elif 'Linux' in quest.tags %}⌨️{% else %}🎯{% endif %}</div>
+        <div>
+          <small>{{ quest.number }} · {{ quest.zone }}</small>
+          <strong>{{ quest.name }}</strong>
+          <p>{{ quest.summary }}</p>
+          <div class="tags">{% for tag in quest.tags %}<span>{{ tag }}</span>{% endfor %}</div>
+        </div>
+        <div class="quest-status"><b>{{ quest.xp }} XP</b><span>{{ quest.status }}</span></div>
+      </a>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </article>
+
+  <article class="panel gear-panel">
+    <div class="panel-title"><h3>Earned Gear</h3><a href="/gear">Gear Vault →</a></div>
+    {% set equipped = state.gear | selectattr('equipped') | list %}
+    {% if equipped %}
+    <div class="gear-grid">
+      {% for item in equipped %}<div class="gear-item {{ item.rarity|lower }}" title="{{ item.effect }}"><span>{{ item.icon }}</span><small>{{ item.name }}</small></div>{% endfor %}
+    </div>
+    {% else %}
+    <p class="empty-state">No gear yet. Complete Quest 001 to earn your first item.</p>
+    {% endif %}
+  </article>
+
+  <article class="panel">
+    <h3>Skill Overview</h3>
+    {% for skill in state.skills %}
+    <div class="skill-row"><span>{{ skill.name }}</span><div class="progress tiny"><span style="width: {{ skill.value }}%"></span></div><b>{{ skill.value }}%</b></div>
+    {% endfor %}
+  </article>
+
+  <article class="panel">
+    <h3>Recent Activity</h3>
+    {% for item in state.activity %}
+    <div class="activity-row"><span>{{ item.icon }}</span><div><strong>{{ item.kind }}: {{ item.text }}</strong><p>{{ item.reward }} · {{ item.when }}</p></div></div>
+    {% endfor %}
+  </article>
+</section>
+{% endblock %}
