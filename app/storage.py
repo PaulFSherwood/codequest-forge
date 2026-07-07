@@ -58,6 +58,14 @@ def connect() -> sqlite3.Connection:
         )
         """
     )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS dev_state (
+            key TEXT PRIMARY KEY,
+            value TEXT NOT NULL
+        )
+        """
+    )
     conn.commit()
     return conn
 
@@ -80,6 +88,61 @@ def level_from_xp(xp: int) -> tuple[int, int, int]:
     nxt = thresholds[current] if current < len(thresholds) else thresholds[-1]
     return current, start, nxt
 
+
+
+
+def xp_for_level(level: int) -> int:
+    """Return total XP required to stand at the beginning of a level."""
+    level = max(1, min(int(level), 100))
+    total = 0
+    for current_level in range(1, level):
+        total += int(300 + (current_level ** 1.6) * 6)
+    return total
+
+
+def get_dev_state() -> dict[str, Any]:
+    with connect() as conn:
+        rows = conn.execute("SELECT key, value FROM dev_state").fetchall()
+    values = {row["key"]: row["value"] for row in rows}
+    return {
+        "xp_adjustment": int(values.get("xp_adjustment", "0") or 0),
+    }
+
+
+def set_dev_value(key: str, value: str | int) -> None:
+    with connect() as conn:
+        conn.execute(
+            """
+            INSERT INTO dev_state (key, value)
+            VALUES (?, ?)
+            ON CONFLICT(key) DO UPDATE SET value=excluded.value
+            """,
+            (key, str(value)),
+        )
+        conn.commit()
+
+
+def adjust_dev_xp(delta: int) -> None:
+    current = get_dev_state()["xp_adjustment"]
+    set_dev_value("xp_adjustment", current + int(delta))
+
+
+def set_dev_total_xp(total_xp: int) -> None:
+    raw_quests = load_seed().get("quests", [])
+    overrides = get_quest_overrides()
+    completed_ids = {qid for qid, row in overrides.items() if row["status"] == "Completed"}
+    completed_xp = sum(q.get("xp", 0) for q in raw_quests if q["id"] in completed_ids)
+    set_dev_value("xp_adjustment", int(total_xp) - completed_xp)
+
+
+def set_dev_level(level: int) -> None:
+    set_dev_total_xp(xp_for_level(level))
+
+
+def clear_dev_state() -> None:
+    with connect() as conn:
+        conn.execute("DELETE FROM dev_state")
+        conn.commit()
 
 def get_submissions() -> list[dict[str, Any]]:
     with connect() as conn:
@@ -247,7 +310,9 @@ def state() -> dict[str, Any]:
 
     raw_quests = [dict(q) for q in seed["quests"]]
     completed_ids = {qid for qid, row in overrides.items() if row["status"] == "Completed"}
-    completed_xp = sum(q.get("xp", 0) for q in raw_quests if q["id"] in completed_ids)
+    earned_xp = sum(q.get("xp", 0) for q in raw_quests if q["id"] in completed_ids)
+    dev = get_dev_state()
+    completed_xp = max(0, earned_xp + int(dev.get("xp_adjustment", 0)))
     level, level_start, level_next_total = level_from_xp(completed_xp)
 
     title, next_title, next_title_level = _title_for_level(seed["titles"], level)
@@ -256,6 +321,8 @@ def state() -> dict[str, Any]:
     profile["xp"] = completed_xp - level_start
     profile["xp_total"] = completed_xp
     profile["xp_next"] = max(1, level_next_total - level_start)
+    profile["earned_xp_total"] = earned_xp
+    profile["dev_xp_adjustment"] = int(dev.get("xp_adjustment", 0))
     profile["current_title"] = title
     profile["next_title"] = next_title
     profile["next_title_level"] = next_title_level
@@ -269,6 +336,11 @@ def state() -> dict[str, Any]:
             quest["submission"] = latest_subs[quest["id"]]
         quests.append(quest)
     seed["quests"] = quests
+    seed["next_quest"] = (
+        next((q for q in quests if q["status"] in {"Pending Review", "In Progress", "Available"}), None)
+        or next((q for q in quests if q["status"] == "Locked"), None)
+        or next((q for q in reversed(quests) if q["status"] == "Completed"), None)
+    )
 
     # Gear unlocks from completed quests.
     completed_reward_gear = {q.get("reward_gear") for q in raw_quests if q["id"] in completed_ids and q.get("reward_gear")}
@@ -344,8 +416,19 @@ def state() -> dict[str, Any]:
                 z["status"] = "Locked"
             z["progress"] = int(100 * len(done) / len(zquests))
         zones.append(z)
+    current_zone = next((z for z in zones if z.get("status") == "Current"), None)
+    if current_zone is None:
+        known_zones = [z for z in zones if z.get("status") != "Hidden"]
+        current_zone = (
+            next((z for z in reversed(known_zones) if z.get("status") == "Completed"), None)
+            or next((z for z in reversed(known_zones)), None)
+            or (zones[0] if zones else {"name": "No Zone", "summary": "No zone data found.", "range": "?"})
+        )
+        profile["current_zone"] = current_zone.get("name", "No Zone")
+    seed["current_zone"] = current_zone
     seed["zones"] = zones
     seed["profile"] = profile
+    seed["dev"] = dev
 
     activity = list(seed.get("activity", []))
     if completed_ids:
@@ -421,6 +504,7 @@ def reset_local_progress() -> None:
         conn.execute("DELETE FROM submissions")
         conn.execute("DELETE FROM quest_overrides")
         conn.execute("DELETE FROM book_progress")
+        conn.execute("DELETE FROM dev_state")
         conn.commit()
 
 

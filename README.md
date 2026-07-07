@@ -119,6 +119,11 @@ data/images/overworld-map.png
 The PNG should be background art only. The app renders dynamic text overlays for player name, level, XP, progress, recent events, and zone labels. Zone label positions are stored in `data/seed.json` as percentage `x` / `y` values.
 
 
-## v0.5.2 Map Note
+## v0.5.3 Map Note
 
 The overworld image lives at `data/images/overworld-map.png`. Zone labels and player progress are rendered dynamically by `/map` using percentage coordinates in `data/seed.json`.
+
+
+## Developer Controls
+
+Open `/admin` to move your test character level up/down while building and checking later screens.

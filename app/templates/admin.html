@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block heading %}Developer Controls{% endblock %}
+{% block content %}
+<section class="grid dashboard-grid">
+  <article class="panel hero-panel wide">
+    <div class="portrait">🧪</div>
+    <div>
+      <span class="eyebrow">Prototype Testing</span>
+      <h2>Character Control Panel</h2>
+      <p class="title-text">Level {{ state.profile.level }} · {{ state.profile.current_title }}</p>
+      <p class="muted">Earned XP: {{ state.profile.earned_xp_total }} · Dev XP adjustment: {{ state.profile.dev_xp_adjustment }} · Effective XP: {{ state.profile.xp_total }}</p>
+      <div class="progress"><span style="width: {{ (state.profile.xp / state.profile.xp_next * 100)|round|int }}%"></span></div>
+    </div>
+  </article>
+
+  <article class="panel">
+    <h3>Move Level Up / Down</h3>
+    <form class="admin-form" method="post" action="/admin/level">
+      <label>Set Level</label>
+      <input name="level" type="number" min="1" max="100" value="{{ state.profile.level }}" />
+      <button class="button" type="submit">Set Level</button>
+    </form>
+    <div class="admin-buttons">
+      <form method="post" action="/admin/level"><input type="hidden" name="level" value="{{ [state.profile.level - 1, 1]|max }}"><button type="submit">Level -1</button></form>
+      <form method="post" action="/admin/level"><input type="hidden" name="level" value="{{ [state.profile.level + 1, 100]|min }}"><button type="submit">Level +1</button></form>
+    </div>
+  </article>
+
+  <article class="panel">
+    <h3>Adjust XP</h3>
+    <div class="admin-buttons">
+      <form method="post" action="/admin/xp"><input type="hidden" name="delta" value="-100"><button type="submit">XP -100</button></form>
+      <form method="post" action="/admin/xp"><input type="hidden" name="delta" value="100"><button type="submit">XP +100</button></form>
+      <form method="post" action="/admin/xp"><input type="hidden" name="delta" value="-1000"><button type="submit">XP -1000</button></form>
+      <form method="post" action="/admin/xp"><input type="hidden" name="delta" value="1000"><button type="submit">XP +1000</button></form>
+    </div>
+    <form method="post" action="/admin/clear-dev" class="admin-form">
+      <button class="button danger" type="submit">Clear Dev Level Override</button>
+    </form>
+  </article>
+
+  <article class="panel wide">
+    <h3>Testing Notes</h3>
+    <p>This page changes only the prototype level/XP overlay. It does not mark quests complete and it does not award gear.</p>
+    <p>Use it while building the app to test level 1, 10, 20, 30, and the late-game screens without grinding the whole campaign.</p>
+  </article>
+</section>
+{% endblock %}

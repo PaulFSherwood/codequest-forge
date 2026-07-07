@@ -519,3 +519,72 @@ input, textarea { width: 100%; border: 1px solid #334155; background: #060b14; c
   .mmo-progress-overlay,
   .mmo-events-overlay { position: absolute; }
 }
+
+.admin-form {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+.admin-form input {
+  background: #080f1d;
+  border: 1px solid #293654;
+  border-radius: 10px;
+  color: #f8fafc;
+  padding: 10px 12px;
+}
+.admin-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+.admin-buttons button,
+.button.danger {
+  border: 1px solid #3b4567;
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #111b2f;
+  color: #e2e8f0;
+  cursor: pointer;
+}
+.button.danger {
+  background: #3a1220;
+  border-color: #7f1d1d;
+}
+.dashboard-current-zone,
+.next-unlock-box {
+  border: 1px solid #24314f;
+  border-radius: 14px;
+  padding: 14px;
+  background: rgba(8, 15, 29, 0.65);
+  margin-top: 12px;
+}
+.completed-quests-box {
+  margin-top: 22px;
+  border: 1px solid #26324d;
+  border-radius: 14px;
+  background: rgba(8, 15, 29, 0.7);
+  padding: 12px;
+}
+
+.completed-quests-box summary {
+  cursor: pointer;
+  color: #94a3b8;
+  font-weight: 700;
+  padding: 8px;
+}
+
+.completed-list {
+  margin-top: 12px;
+}
+
+.quest-card.completed {
+  opacity: 0.45;
+  filter: grayscale(0.75);
+  border-color: #334155;
+}
+
+.quest-card.completed:hover {
+  opacity: 0.8;
+  filter: grayscale(0.25);
+}

@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% block heading %}Campaign Dashboard{% endblock %}
 {% block content %}
+{% set current_zone = state.current_zone %}
+{% set next_quest = state.next_quest %}
 {% set start_quest = state.quests | selectattr('id', 'equalto', state.profile.start_quest_id) | list | first %}
-{% set current_zone = state.zones | selectattr('status', 'equalto', 'Current') | list | first %}
 <section class="grid dashboard-grid">
   <article class="panel hero-panel">
     <div class="portrait">🧔🏻‍♂️</div>
@@ -10,41 +11,47 @@
       <span class="eyebrow">Goal: {{ state.profile.main_goal }}</span>
       <h2>{{ state.profile.name }}</h2>
       <p class="title-text">Level {{ state.profile.level }} · {{ state.profile.current_title }}</p>
-      <div class="xp-line"><span>XP {{ "{:,}".format(state.profile.xp) }} / {{ "{:,}".format(state.profile.xp_next) }}</span><span>{{ state.profile.xp_next - state.profile.xp }} XP to next level</span></div>
+      <div class="xp-line">
+        <span>XP {{ "{:,}".format(state.profile.xp) }} / {{ "{:,}".format(state.profile.xp_next) }}</span>
+        <span>{{ state.profile.xp_next - state.profile.xp }} XP to next level</span>
+      </div>
       <div class="progress"><span style="width: {{ (state.profile.xp / state.profile.xp_next * 100)|round|int }}%"></span></div>
+      {% if state.profile.dev_xp_adjustment != 0 %}
+      <p class="muted">Dev XP adjustment: {{ state.profile.dev_xp_adjustment }} · <a href="/admin">controls</a></p>
+      {% endif %}
     </div>
   </article>
 
   <article class="panel start-panel">
-    <span class="eyebrow">Start Here</span>
-    <h3>First Quest: {{ start_quest.name }}</h3>
-    <p>{{ start_quest.summary }}</p>
+    {% if next_quest and next_quest.status != 'Completed' %}
+    <span class="eyebrow">Next Step</span>
+    <h3>{{ next_quest.name }}</h3>
+    <p>{{ next_quest.summary }}</p>
     <ol class="start-list">
-      <li>Open the first quest.</li>
-      <li>Build the tiny GitHub repo.</li>
-      <li>Submit the link and console output.</li>
+      <li>Open the quest.</li>
+      <li>Use the recommended Books of Knowledge if needed.</li>
+      <li>Build the repo, submit proof, then mark complete when earned.</li>
     </ol>
-    <a class="button" href="/quest/{{ start_quest.id }}">Begin Quest 001</a>
+    <a class="button" href="/quest/{{ next_quest.id }}">Open Next Quest</a>
+    {% else %}
+    <span class="eyebrow">Campaign Complete</span>
+    <h3>All visible quests are complete.</h3>
+    <p>You cleared the current quest spine. Use Dev Controls while testing, or add the next campaign pack.</p>
+    <a class="button" href="/admin">Open Dev Controls</a>
+    {% endif %}
   </article>
 
   <article class="panel map-panel wide">
-    <div class="panel-title"><h3>Overworld Map</h3><a href="/map">Travel →</a></div>
-    <div class="overworld compact">
-      <div class="map-river"></div>
-      <svg class="map-paths" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M17 68 C26 64, 29 60, 33 58 S43 49,49 44 S57 51,62 58" />
-      </svg>
-      {% for zone in state.zones %}
-      <a href="/map#{{ zone.id }}" class="map-node {{ zone.status|lower }}" style="left: {{ zone.x }}%; top: {{ zone.y }}%;">
-        <span class="node-dot">{% if zone.status == 'Hidden' %}?{% elif zone.status == 'Locked' %}🔒{% else %}{{ loop.index }}{% endif %}</span>
-        <strong>{% if zone.status == 'Hidden' %}Uncharted{% else %}{{ zone.name }}{% endif %}</strong>
-        <small>{{ zone.status }}</small>
-      </a>
-      {% endfor %}
-    </div>
-    <div class="current-zone">
-      <strong>Current Zone: {{ current_zone.name }}</strong>
+    <div class="panel-title"><h3>Current Location</h3><a href="/map">Travel →</a></div>
+    <div class="current-zone dashboard-current-zone">
+      <strong>{{ current_zone.name }}</strong>
+      <p>Levels {{ current_zone.range }} · {{ current_zone.status|default('Known') }} · {{ current_zone.progress|default(0) }}%</p>
       <p>{{ current_zone.summary }}</p>
+    </div>
+    <div class="next-unlock-box">
+      <span class="eyebrow">Next Title</span>
+      <strong>{{ state.profile.next_title }}</strong>
+      <p>Earned at Level {{ state.profile.next_title_level }}.</p>
     </div>
   </article>
 
@@ -64,11 +71,11 @@
   </article>
 
   <article class="panel wide">
-    <div class="panel-title"><h3>Starting Quests</h3><a href="/quests">View All →</a></div>
+    <div class="panel-title"><h3>Quest Board Preview</h3><a href="/quests">View All →</a></div>
     <div class="quest-list">
       {% set visible_start = state.quests | rejectattr('status', 'equalto', 'Hidden') | sort(attribute='recommended_level') | list %}
       {% for quest in visible_start %}
-      {% if loop.index <= 5 %}
+      {% if loop.index <= 6 %}
       <a class="quest-card {{ quest.status|lower }}" href="/quest/{{ quest.id }}">
         <div class="quest-icon">{% if 'Boss' in quest.tags %}👹{% elif 'Linux' in quest.tags %}⌨️{% else %}🎯{% endif %}</div>
         <div>
@@ -103,14 +110,13 @@
     {% endfor %}
   </article>
 
-
   <article class="panel">
     <div class="panel-title"><h3>Books of Knowledge</h3><a href="/books">Study →</a></div>
     {% set unlocked_books = state.books | selectattr('unlocked') | list %}
-    <p class="muted">Concept help unlocks as you prove the foundation. No 2D arrays before loops and arrays.</p>
+    <p class="muted">Books teach. Quests prove. Dungeons combine the skills.</p>
     <div class="book-mini-list">
       {% for book in unlocked_books[:5] %}
-      <a href="/book/{{ book.id }}" class="book-chip unlocked">Lv {{ book.book_level }} · {{ book.concept }}</a>
+      <a href="/book/{{ book.id }}" class="book-chip unlocked">Lv {{ book.book_level }} · {{ book.concept }} · {{ book.status }}</a>
       {% endfor %}
     </div>
   </article>

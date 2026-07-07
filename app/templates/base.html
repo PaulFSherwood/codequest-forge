@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{% block title %}CodeQuest Forge{% endblock %}</title>
-  <link rel="stylesheet" href="/static/styles.css?v=0.5.2" />
+  <link rel="stylesheet" href="/static/styles.css?v=0.5.3" />
 </head>
 <body>
   <div class="app-shell">
@@ -24,6 +24,7 @@
         <a href="/gear" class="{% if request.url.path == '/gear' %}active{% endif %}">🎒 Gear</a>
         <a href="/books" class="{% if request.url.path.startswith('/book') or request.url.path == '/books' %}active{% endif %}">📚 Books</a>
         <a href="/mini" class="{% if request.url.path == '/mini' %}active{% endif %}">📱 Mini View</a>
+        <a href="/admin" class="{% if request.url.path == '/admin' %}active{% endif %}">🧪 Dev Controls</a>
       </nav>
       <div class="side-card">
         <span class="eyebrow">Current Grind</span>

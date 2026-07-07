@@ -1,12 +1,23 @@
 {% extends "base.html" %}
 {% block heading %}Quest Board{% endblock %}
 {% block content %}
-{% set visible_quests = state.quests | rejectattr('status', 'equalto', 'Hidden') | sort(attribute='recommended_level') | list %}
+{% set active_quests = state.quests
+  | rejectattr('status', 'equalto', 'Hidden')
+  | rejectattr('status', 'equalto', 'Completed')
+  | sort(attribute='board_order')
+  | list
+%}
+
+{% set completed_quests = state.quests
+  | selectattr('status', 'equalto', 'Completed')
+  | sort(attribute='recommended_level')
+  | list
+%}
 {% set hidden_quests = state.quests | selectattr('status', 'equalto', 'Hidden') | list %}
 <section class="panel">
   <div class="panel-title"><h3>Available and Known Quests</h3><span class="muted">{{ hidden_quests|length }} hidden quests remain uncharted.</span></div>
   <div class="quest-list full">
-    {% for quest in visible_quests %}
+    {% for quest in active_quests %}
     <a class="quest-card {{ quest.status|lower }}" href="/quest/{{ quest.id }}">
       <div class="quest-icon">{% if 'Boss' in quest.tags %}👹{% elif 'Dungeon' in quest.tags %}🏰{% elif 'Linux' in quest.tags %}⌨️{% elif 'SDL' in quest.tags %}🎮{% elif 'Military' in quest.tags %}🛰️{% else %}🎯{% endif %}</div>
       <div>
@@ -24,4 +35,31 @@
   <div class="panel-title"><h3>Uncharted Quest Fog</h3><span class="muted">Like WoW, the distant world is rumor until you travel there.</span></div>
   <p class="muted">Hidden quests are intentionally not listed one-by-one. Complete the known chain to reveal new zones and quest hubs.</p>
 </section>
+{% if completed_quests %}
+<details class="completed-quests-box">
+  <summary>Completed Quests — {{ completed_quests|length }}</summary>
+
+  <div class="quest-list completed-list">
+    {% for quest in completed_quests %}
+    <a class="quest-card completed" href="/quest/{{ quest.id }}">
+      <div class="quest-icon">✅</div>
+      <div>
+        <small>{{ quest.number }} · {{ quest.zone }} · Level {{ quest.recommended_level }} · {{ quest.kind }}</small>
+        <strong>{{ quest.name }}</strong>
+        <p>{{ quest.summary }}</p>
+        <div class="tags">
+          {% for tag in quest.tags %}
+          <span>{{ tag }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="quest-status">
+        <b>{{ quest.xp }} XP</b>
+        <span>Completed</span>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
+</details>
+{% endif %}
 {% endblock %}

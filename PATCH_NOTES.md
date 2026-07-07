@@ -22,3 +22,12 @@ Open `data/seed.json` and edit these values per zone:
 ```
 
 Values are percentages of the image width/height.
+
+## v0.5.3
+
+- Fixed dashboard crash when no zone has `Current` status, such as after completing the final quest.
+- Dashboard now uses `state.current_zone` fallback instead of assuming a current zone always exists.
+- Dashboard Start Here panel is now a Next Step panel and stops pointing at Quest 001 after it is completed.
+- Added `/admin` Developer Controls for prototype testing.
+- Added Set Level, Level +/- 1, XP +/- controls, and Clear Dev Level Override.
+- Dev level override changes only effective level/XP for testing screens. It does not complete quests or award gear.

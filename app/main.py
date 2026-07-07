@@ -12,7 +12,7 @@ from . import storage
 
 ROOT = Path(__file__).resolve().parents[1]
 
-app = FastAPI(title="CodeQuest Forge", version="0.5.2")
+app = FastAPI(title="CodeQuest Forge", version="0.5.3")
 DATA_IMAGES_DIR = ROOT / "data" / "images"
 DATA_IMAGES_DIR.mkdir(parents=True, exist_ok=True)
 app.mount("/static", StaticFiles(directory=ROOT / "app" / "static"), name="static")
@@ -152,6 +152,31 @@ def undo_quest(quest_id: str):
         raise HTTPException(status_code=404, detail="Quest not found")
     storage.clear_quest_override(quest_id)
     return RedirectResponse(url=f"/quest/{quest_id}?undone=1", status_code=303)
+
+
+
+
+@app.get("/admin", response_class=HTMLResponse)
+def admin(request: Request):
+    return render(request, "admin.html")
+
+
+@app.post("/admin/level")
+def admin_set_level(level: int = Form(...)):
+    storage.set_dev_level(level)
+    return RedirectResponse(url="/admin?level=1", status_code=303)
+
+
+@app.post("/admin/xp")
+def admin_adjust_xp(delta: int = Form(...)):
+    storage.adjust_dev_xp(delta)
+    return RedirectResponse(url="/admin?xp=1", status_code=303)
+
+
+@app.post("/admin/clear-dev")
+def admin_clear_dev():
+    storage.clear_dev_state()
+    return RedirectResponse(url="/admin?cleared=1", status_code=303)
 
 
 @app.get("/api/state")
