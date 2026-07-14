@@ -3,31 +3,30 @@
     {
       "id": "ada",
       "name": "Ada",
-      "subtitle": "Five cumulative Alire projects from fundamentals through GtkAda",
       "enabled": true,
       "toolchain": [
         "Alire",
         "GNAT",
+        "GPRbuild",
         "AUnit",
-        "SDLada",
+        "SPARK",
         "GtkAda"
       ]
     },
     {
       "id": "cpp",
       "name": "C++",
-      "subtitle": "Modern C++ systems and game development",
       "enabled": true,
       "toolchain": [
         "CMake",
         "Clang",
-        "GCC"
+        "GCC",
+        "CTest"
       ]
     },
     {
       "id": "python",
       "name": "Python",
-      "subtitle": "Automation, services, and tools",
       "enabled": false,
       "toolchain": [
         "Python",
@@ -37,7 +36,6 @@
     {
       "id": "rust",
       "name": "Rust",
-      "subtitle": "Memory-safe systems programming",
       "enabled": false,
       "toolchain": [
         "Cargo",

@@ -19,9 +19,8 @@ PROFILE_FILE = DATA_DIR / "learning_profile.json"
 TRACKS_FILE = DATA_DIR / "language_tracks.json"
 ADA_QUESTS_FILE = DATA_DIR / "ada_quests.json"
 ADA_PROGRESS_FILE = DATA_DIR / "ada_progress.json"
-ADA_MARKDOWN_FILE = DOCS_DIR / "ADA_PROJECT_PATH.md"
-ADA_CSV_FILE = DOCS_DIR / "ADA_PROJECT_QUESTS.csv"
-ADA_PATH_FILE = DOCS_DIR / "ADA_PROJECT_PATH.md"
+ADA_MARKDOWN_FILE = DOCS_DIR / "ADA_QUESTS.md"
+ADA_CSV_FILE = DOCS_DIR / "ADA_QUESTS.csv"
 
 
 def _utc_now() -> str:
@@ -61,7 +60,7 @@ def _tracks() -> list[dict[str, Any]]:
 
 
 def _quest_document() -> dict[str, Any]:
-    return _read_json(ADA_QUESTS_FILE, {"version": 6, "quests": [], "projects": [], "stages": []})
+    return _read_json(ADA_QUESTS_FILE, {"version": 5, "quests": [], "stages": []})
 
 
 def _quests() -> list[dict[str, Any]]:
@@ -147,13 +146,6 @@ def _summary(quest: dict[str, Any] | None) -> dict[str, Any] | None:
         "level",
         "stage_id",
         "stage_name",
-        "project_id",
-        "project_name",
-        "chapter_id",
-        "chapter_name",
-        "workspace",
-        "source_files",
-        "deliverable",
         "kind",
         "concept",
         "difficulty",
@@ -173,27 +165,8 @@ def state() -> dict[str, Any]:
     progress = _progress()
     entries = progress.get("quests", {})
 
-    mastered = sum(1 for quest in quests if entries.get(quest.get("slug", ""), {}).get("status") == "mastered")
-    reviewing = sum(1 for quest in quests if entries.get(quest.get("slug", ""), {}).get("status") == "review")
-
-    project_summaries = []
-    for project in document.get("projects", []):
-        project_id = project.get("id")
-        project_quests = [quest for quest in quests if quest.get("project_id") == project_id]
-        project_mastered = sum(1 for quest in project_quests if entries.get(quest.get("slug", ""), {}).get("status") == "mastered")
-        project_reviewing = sum(1 for quest in project_quests if entries.get(quest.get("slug", ""), {}).get("status") == "review")
-        project_summaries.append({
-            "id": project_id,
-            "name": project.get("name"),
-            "short_name": project.get("short_name"),
-            "goal": project.get("goal"),
-            "final_product": project.get("final_product"),
-            "workspace": project.get("workspace"),
-            "chapter_count": project.get("chapter_count", 0),
-            "total": len(project_quests),
-            "mastered": project_mastered,
-            "reviewing": project_reviewing,
-        })
+    mastered = sum(1 for item in entries.values() if item.get("status") == "mastered")
+    reviewing = sum(1 for item in entries.values() if item.get("status") == "review")
 
     return {
         "active_track": profile.get("active_track", "ada"),
@@ -209,13 +182,7 @@ def state() -> dict[str, Any]:
             "total": len(quests),
             "mastered": mastered,
             "reviewing": reviewing,
-            "project_count": len(project_summaries),
-            "chapter_count": document.get("chapter_count", 0),
-            "projects": project_summaries,
-            "stages": [
-                {"id": project.get("id"), "name": project.get("name"), "quest_count": project.get("total", 0)}
-                for project in project_summaries
-            ],
+            "stages": document.get("stages", []),
             "kinds": document.get("quest_kinds", []),
             "next_quest": _summary(_next_quest(quests, progress)),
         },
@@ -240,7 +207,7 @@ def list_ada_quests(
         entry = entries.get(quest["slug"], {})
         quest_status = entry.get("status", "new")
 
-        if stage and quest.get("project_id", quest.get("stage_id")) != stage:
+        if stage and quest.get("stage_id") != stage:
             continue
         if kind and quest.get("kind") != kind:
             continue
@@ -249,7 +216,7 @@ def list_ada_quests(
         if needle:
             haystack = " ".join(
                 str(quest.get(key, ""))
-                for key in ("quest_id", "title", "concept", "summary", "stage_name", "project_name", "chapter_name", "deliverable", "kind")
+                for key in ("quest_id", "title", "concept", "summary", "stage_name", "kind")
             ).casefold()
             if needle not in haystack:
                 continue
@@ -392,16 +359,7 @@ def download_csv() -> Response:
     return Response(
         ADA_CSV_FILE.read_text(encoding="utf-8"),
         media_type="text/csv; charset=utf-8",
-        headers={"Content-Disposition": 'attachment; filename="ADA_PROJECT_QUESTS.csv"'},
-    )
-
-
-@router.get("/download/ada-project-path.md")
-def download_project_path() -> Response:
-    return Response(
-        ADA_PATH_FILE.read_text(encoding="utf-8"),
-        media_type="text/markdown; charset=utf-8",
-        headers={"Content-Disposition": 'attachment; filename="ADA_PROJECT_PATH.md"'},
+        headers={"Content-Disposition": 'attachment; filename="ADA_QUESTS.csv"'},
     )
 
 
@@ -584,33 +542,6 @@ INTEGRATION_CSS = r"""
   border-radius: 8px;
   color: #bcd9ff;
 }
-
-.cq-project-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 10px;
-  margin-bottom: 14px;
-}
-.cq-project-card {
-  padding: 14px;
-  border: 1px solid var(--border, #35445c);
-  border-radius: 10px;
-  background: var(--panel, rgba(13, 23, 38, .96));
-}
-.cq-project-card h3 { margin: 5px 0; }
-.cq-project-progress {
-  margin-top: 10px;
-  color: var(--accent, #e6c676);
-  font-weight: 800;
-}
-.cq-workspace-box {
-  margin: 12px 0;
-  padding: 12px;
-  border: 1px solid var(--border, #526079);
-  border-radius: 8px;
-  background: rgba(9,16,27,.72);
-}
-
 @media (max-width: 900px) {
   .cq-ada-toolbar { grid-template-columns: 1fr 1fr; }
 }
@@ -752,16 +683,15 @@ INTEGRATION_JS = r"""
 
     root.innerHTML = `<div class="cq-ada-root cq-ada-detail">
       <div class="cq-ada-actions">
-        <button class="cq-ada-button secondary" id="cq-back-to-list">← Project Quest List</button>
-        <a class="cq-ada-link secondary" href="/learning/download/ada-project-path.md">Project Path</a>
+        <button class="cq-ada-button secondary" id="cq-back-to-list">← All Ada Quests</button>
+        <a class="cq-ada-link secondary" href="/learning/download/ada-quests.md">Markdown</a>
         <a class="cq-ada-link secondary" href="/learning/download/ada-quests.csv">CSV</a>
         <a class="cq-ada-link secondary" href="/learning/download/ada-quests.json">JSON</a>
       </div>
       <div class="cq-ada-eyebrow">${esc(quest.quest_id)} · Level ${esc(quest.level)} · ${esc(quest.kind)} · ${esc(quest.xp)} XP</div>
       <h2>${esc(quest.title)}</h2>
       <p class="cq-ada-muted">${esc(quest.summary)}</p>
-      <p><strong>Project:</strong> ${esc(quest.project_name)}<br><strong>Chapter:</strong> ${esc(quest.chapter_name)}<br><strong>Concept:</strong> ${esc(quest.concept)}</p>
-      <div class="cq-workspace-box"><strong>Workspace</strong><pre><code>${esc(quest.workspace)}</code></pre><strong>Primary files</strong>${orderedList(quest.source_files || [])}</div>
+      <p><strong>Stage:</strong> ${esc(quest.stage_name)} &nbsp; <strong>Concept:</strong> ${esc(quest.concept)}</p>
       <h3>Quest</h3>
       <p>${esc(quest.prompt)}</p>
       ${quest.instructions?.length ? `<h3>Steps</h3>${orderedList(quest.instructions)}` : ""}
@@ -814,13 +744,12 @@ INTEGRATION_JS = r"""
     const data = await requestJson(`/learning/api/ada/quests?${params}`);
     state.total = data.total;
 
-    const stages = (appState.ada.stages || []).map((stage) => `<option value="${esc(stage.id)}">${esc(stage.name)} (${esc(stage.quest_count)})</option>`).join("");
-    const projectCards = (appState.ada.projects || []).map((project) => `<article class="cq-project-card"><div class="cq-ada-eyebrow">${esc(project.short_name)}</div><h3>${esc(project.name)}</h3><p class="cq-ada-muted">${esc(project.goal)}</p><div class="cq-project-progress">${esc(project.mastered)} / ${esc(project.total)} mastered</div><button class="cq-ada-link secondary cq-project-filter" data-project="${esc(project.id)}" style="margin-top:9px">Open project</button></article>`).join("");
+    const stages = (appState.ada.stages || []).map((stage) => `<option value="${esc(stage.id)}">${esc(stage.name)}</option>`).join("");
     const kinds = (appState.ada.kinds || []).map((kind) => `<option value="${esc(kind)}">${esc(kind)}</option>`).join("");
     const cards = data.items.map((quest) => `<article class="cq-ada-card" data-status="${esc(quest.status)}">
       <div class="cq-ada-level">${esc(quest.level)}</div>
       <div>
-        <div class="cq-ada-meta">${esc(quest.quest_id)} · ${esc(quest.kind)} · ${esc(quest.project_name)} · ${esc(quest.chapter_name)} · ${esc(quest.xp)} XP</div>
+        <div class="cq-ada-meta">${esc(quest.quest_id)} · ${esc(quest.kind)} · ${esc(quest.stage_name)} · ${esc(quest.xp)} XP</div>
         <h3>${esc(quest.title)}</h3>
         <p class="cq-ada-muted">${esc(quest.summary)}</p>
       </div>
@@ -835,24 +764,23 @@ INTEGRATION_JS = r"""
       <section class="cq-ada-summary">
         <div>
           <div class="cq-ada-eyebrow">ACTIVE LANGUAGE · ADA</div>
-          <h1>Ada Project Mastery</h1>
-          <p class="cq-ada-muted">${esc(appState.ada.total)} cumulative quests across ${esc(appState.ada.project_count)} long-lived Alire projects and ${esc(appState.ada.chapter_count)} project chapters.</p>
+          <h1>Ada Senior Mastery</h1>
+          <p class="cq-ada-muted">${esc(appState.ada.total)} quests across Alire, core Ada, real-time systems, interoperability, testing, architecture, and GtkAda.</p>
         </div>
         <div>
           <div class="cq-ada-count">${esc(appState.ada.mastered)} / ${esc(appState.ada.total)}</div>
           <div class="cq-ada-muted">Mastered</div>
         </div>
       </section>
-      <section class="cq-project-grid">${projectCards}</section>
       ${next ? `<section class="cq-ada-next"><div><div class="cq-ada-eyebrow">DO THIS NEXT</div><h2>${esc(next.title)}</h2><p class="cq-ada-muted">${esc(next.summary)}</p></div><button class="cq-ada-link" id="cq-open-next">Start</button></section>` : ""}
       <div class="cq-ada-actions" style="margin-bottom:14px">
-        <a class="cq-ada-link secondary" href="/learning/download/ada-project-path.md">Offline Project Path</a>
+        <a class="cq-ada-link secondary" href="/learning/download/ada-quests.md">Offline Markdown</a>
         <a class="cq-ada-link secondary" href="/learning/download/ada-quests.csv">Offline CSV</a>
         <a class="cq-ada-link secondary" href="/learning/download/ada-quests.json">Editable JSON</a>
       </div>
       <section class="cq-ada-toolbar">
-        <input id="cq-search" value="${esc(state.search)}" placeholder="Search ${esc(appState.ada.total)} project quests">
-        <select id="cq-stage"><option value="">All projects</option>${stages}</select>
+        <input id="cq-search" value="${esc(state.search)}" placeholder="Search 1,200 quests">
+        <select id="cq-stage"><option value="">All stages</option>${stages}</select>
         <select id="cq-kind"><option value="">All quest types</option>${kinds}</select>
         <select id="cq-status"><option value="">All progress</option><option value="new">New</option><option value="attempted">Attempted</option><option value="review">Review</option><option value="mastered">Mastered</option></select>
         <button class="cq-ada-button" id="cq-filter">Apply</button>
@@ -868,12 +796,6 @@ INTEGRATION_JS = r"""
     root.querySelectorAll(".cq-open-quest").forEach((button) => button.addEventListener("click", () => {
       setQuestUrl(button.dataset.slug);
       showQuest(root, button.dataset.slug);
-    }));
-
-    root.querySelectorAll(".cq-project-filter").forEach((button) => button.addEventListener("click", () => {
-      state.stage = button.dataset.project;
-      state.offset = 0;
-      renderList(root, appState);
     }));
 
     root.querySelector("#cq-open-next")?.addEventListener("click", () => {
@@ -951,11 +873,11 @@ class CQLanguageInjectionMiddleware(BaseHTTPMiddleware):
         except (UnicodeDecodeError, AttributeError):
             return response
 
-        marker = "cq-language-integration-v6"
+        marker = "cq-language-integration-v5"
         if marker not in text and "</head>" in text.lower():
             insertion = (
-                f'<link id="{marker}" rel="stylesheet" href="/learning/assets/integration.css?v=6">'
-                '<script defer src="/learning/assets/integration.js?v=6"></script>'
+                f'<link id="{marker}" rel="stylesheet" href="/learning/assets/integration.css?v=5">'
+                '<script defer src="/learning/assets/integration.js?v=5"></script>'
             )
             lower = text.lower()
             index = lower.rfind("</head>")

@@ -2,5 +2,8 @@
   "completed": [],
   "attempts": {},
   "last_answer": {},
-  "active_quest": "alire-first-crate"
+  "active_quest": "alire-first-crate",
+  "version": 3,
+  "quests": {},
+  "last_opened": "intro_dungeon-01-toolchain-07-repair"
 }
