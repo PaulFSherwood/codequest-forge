@@ -9,13 +9,10 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from . import storage
-from app.language_tracks import install_learning_track_support, router as language_tracks_router
 
 ROOT = Path(__file__).resolve().parents[1]
 
 app = FastAPI(title="CodeQuest Forge", version="0.5.3")
-app.include_router(language_tracks_router)
-install_learning_track_support(app)
 DATA_IMAGES_DIR = ROOT / "data" / "images"
 DATA_IMAGES_DIR.mkdir(parents=True, exist_ok=True)
 app.mount("/static", StaticFiles(directory=ROOT / "app" / "static"), name="static")

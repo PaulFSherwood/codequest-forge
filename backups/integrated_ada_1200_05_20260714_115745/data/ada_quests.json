@@ -1,0 +1,270 @@
+{
+  "quests": [
+    {
+      "slug": "alire-first-crate",
+      "title": "Forge Your First Alire Crate",
+      "level": 1,
+      "kind": "Build",
+      "concept": "Alire workflow",
+      "difficulty": "Foundation",
+      "xp": 100,
+      "summary": "Create, build, and run a new Ada executable using Alire.",
+      "instructions": [
+        "Create a new directory under your Ada mastery workspace.",
+        "Run alr init --bin ada_first_crate.",
+        "Build it with alr build.",
+        "Run it with alr run.",
+        "Change the program so it prints your name and the words Ada mastery begins."
+      ],
+      "acceptance": [
+        "The crate contains alire.toml.",
+        "alr build succeeds.",
+        "alr run prints the required message."
+      ],
+      "commands": "mkdir -p ~/Documents/src/projects/ada-mastery\ncd ~/Documents/src/projects/ada-mastery\nalr init --bin ada_first_crate\ncd ada_first_crate\nalr build\nalr run",
+      "starter_code": "with Ada.Text_IO;\n\nprocedure Ada_First_Crate is\nbegin\n   Ada.Text_IO.Put_Line (\"Ada mastery begins.\");\nend Ada_First_Crate;"
+    },
+    {
+      "slug": "variable-before-use",
+      "title": "Variable Before Use",
+      "level": 1,
+      "kind": "Recall",
+      "concept": "Initialization",
+      "difficulty": "Foundation",
+      "xp": 60,
+      "summary": "Explain the rule that keeps an Ada variable from being read before it has a value.",
+      "question": "What must happen before an Ada variable can safely be read?",
+      "accepted_keywords": ["initializ|assign|value"],
+      "instructions": ["Answer in your own words. One sentence is enough."],
+      "acceptance": ["The answer explains that the object must receive a valid value before being read."]
+    },
+    {
+      "slug": "constant-vs-variable",
+      "title": "Constant or Variable?",
+      "level": 1,
+      "kind": "Read",
+      "concept": "Constants",
+      "difficulty": "Foundation",
+      "xp": 70,
+      "summary": "Read two declarations and explain which object may change.",
+      "question": "In `Max_Speed : constant Integer := 450;` and `Speed : Integer := 0;`, which object may be assigned a new value later, and why?",
+      "accepted_keywords": ["Speed", "constant|Max_Speed", "change|assign"],
+      "instructions": ["Name both objects and explain the difference."],
+      "acceptance": ["Speed may change; Max_Speed is constant after initialization."]
+    },
+    {
+      "slug": "range-checked-altitude",
+      "title": "Range-Checked Altitude",
+      "level": 2,
+      "kind": "Write",
+      "concept": "Subtypes and ranges",
+      "difficulty": "Foundation",
+      "xp": 120,
+      "summary": "Use a subtype to prevent an impossible aircraft altitude.",
+      "instructions": [
+        "Create subtype Altitude_Feet with a range from 0 through 60_000.",
+        "Declare Current_Altitude using that subtype.",
+        "Print the altitude.",
+        "Temporarily assign 70_000 and observe the runtime range check."
+      ],
+      "acceptance": [
+        "Altitude_Feet is a subtype with an explicit range.",
+        "The valid assignment runs.",
+        "The invalid assignment demonstrates Constraint_Error."
+      ],
+      "starter_code": "with Ada.Text_IO;\n\nprocedure Range_Checked_Altitude is\n   subtype Altitude_Feet is Integer range 0 .. 60_000;\n   Current_Altitude : Altitude_Feet := 12_500;\nbegin\n   Ada.Text_IO.Put_Line (Altitude_Feet'Image (Current_Altitude));\nend Range_Checked_Altitude;"
+    },
+    {
+      "slug": "range-check-prediction",
+      "title": "Predict the Range Check",
+      "level": 2,
+      "kind": "Predict",
+      "concept": "Constraint_Error",
+      "difficulty": "Foundation",
+      "xp": 80,
+      "summary": "Predict what happens when a value violates a subtype range.",
+      "question": "Given `subtype Percent is Integer range 0 .. 100; P : Percent := 101;`, what happens and which exception is involved?",
+      "accepted_keywords": ["Constraint_Error|constraint error", "range|101|outside"],
+      "instructions": ["State whether this is accepted and name the exception."],
+      "acceptance": ["The answer identifies a failed range check and Constraint_Error."]
+    },
+    {
+      "slug": "parameter-mode-in",
+      "title": "Parameter Mode: in",
+      "level": 3,
+      "kind": "Recall",
+      "concept": "Parameter modes",
+      "difficulty": "Foundation",
+      "xp": 70,
+      "summary": "Explain what an `in` parameter communicates to callers.",
+      "question": "What does parameter mode `in` mean in an Ada procedure?",
+      "accepted_keywords": ["input|read", "not|cannot|no", "assign|modify|change"],
+      "instructions": ["Explain both what the procedure can do and what it cannot do."],
+      "acceptance": ["The parameter supplies input and is not assigned by the procedure."]
+    },
+    {
+      "slug": "parameter-mode-in-out",
+      "title": "Move the Aircraft",
+      "level": 3,
+      "kind": "Write",
+      "concept": "in out parameters",
+      "difficulty": "Foundation",
+      "xp": 130,
+      "summary": "Write a procedure that updates an existing position.",
+      "instructions": [
+        "Create a record containing X and Y coordinates.",
+        "Write Move with Position as `in out` and Delta_X/Delta_Y as `in`.",
+        "Call Move twice and print the final position."
+      ],
+      "acceptance": [
+        "Only the position uses `in out`.",
+        "The delta parameters use `in` or the default mode.",
+        "The original record is updated."
+      ],
+      "starter_code": "type Position is record\n   X : Integer := 0;\n   Y : Integer := 0;\nend record;\n\nprocedure Move\n  (Location : in out Position;\n   Delta_X  : in Integer;\n   Delta_Y  : in Integer) is\nbegin\n   Location.X := Location.X + Delta_X;\n   Location.Y := Location.Y + Delta_Y;\nend Move;"
+    },
+    {
+      "slug": "repair-wrong-parameter-mode",
+      "title": "Repair the Parameter Mode",
+      "level": 3,
+      "kind": "Repair",
+      "concept": "Parameter modes",
+      "difficulty": "Foundation",
+      "xp": 130,
+      "summary": "Fix a procedure that tries to modify an input-only parameter.",
+      "question": "What change is required so this procedure may update `Value`? `procedure Increment (Value : in Integer) is begin Value := Value + 1; end Increment;`",
+      "accepted_keywords": ["in out", "Value"],
+      "instructions": ["Name the corrected parameter mode and explain why."],
+      "acceptance": ["Value is changed from `in` to `in out`."]
+    },
+    {
+      "slug": "case-enumeration",
+      "title": "Flight Mode Case Statement",
+      "level": 4,
+      "kind": "Write",
+      "concept": "Enumeration and case",
+      "difficulty": "Foundation",
+      "xp": 140,
+      "summary": "Model a finite set of flight modes with exhaustive handling.",
+      "instructions": [
+        "Declare Flight_Mode as an enumeration containing Parked, Taxi, Climb, Cruise, and Landing.",
+        "Write a case statement that prints a distinct message for every value.",
+        "Do not use `when others`."
+      ],
+      "acceptance": [
+        "The enumeration represents only valid flight modes.",
+        "Every value is handled explicitly.",
+        "The compiler can detect a missing branch."
+      ]
+    },
+    {
+      "slug": "package-spec-body",
+      "title": "Split a Package",
+      "level": 5,
+      "kind": "Build",
+      "concept": "Package specification and body",
+      "difficulty": "Foundation",
+      "xp": 170,
+      "summary": "Separate a public interface from its implementation.",
+      "instructions": [
+        "Create aircraft_status.ads and aircraft_status.adb.",
+        "Expose Set_Altitude and Get_Altitude in the specification.",
+        "Keep the stored altitude private inside the body.",
+        "Use the package from the crate's main procedure."
+      ],
+      "acceptance": [
+        "Clients depend on the specification.",
+        "The stored state is not directly visible to clients.",
+        "alr build and alr run succeed."
+      ]
+    },
+    {
+      "slug": "records-and-arrays",
+      "title": "Three-Sensor Snapshot",
+      "level": 6,
+      "kind": "Write",
+      "concept": "Records and arrays",
+      "difficulty": "Foundation",
+      "xp": 180,
+      "summary": "Represent several strongly typed sensor readings.",
+      "instructions": [
+        "Create a Sensor_Reading record with Name, Value, and Healthy fields.",
+        "Create a fixed array containing exactly three readings.",
+        "Loop over the array and print each sensor's state."
+      ],
+      "acceptance": [
+        "The related fields are grouped in a record.",
+        "The three records are held in an array.",
+        "Iteration does not use magic indexes outside the array range."
+      ]
+    },
+    {
+      "slug": "exception-boundary",
+      "title": "Protect the Input Boundary",
+      "level": 7,
+      "kind": "Repair",
+      "concept": "Exceptions",
+      "difficulty": "Foundation",
+      "xp": 190,
+      "summary": "Handle invalid text at the input boundary instead of hiding every error.",
+      "instructions": [
+        "Read an altitude as text.",
+        "Convert it with Integer'Value.",
+        "Handle Constraint_Error near the conversion.",
+        "Do not use `when others => null`."
+      ],
+      "acceptance": [
+        "Invalid numeric text produces a useful message.",
+        "The exception handler is close to the risky conversion.",
+        "Unexpected exceptions are not silently discarded."
+      ]
+    },
+    {
+      "slug": "gtkada-first-window",
+      "title": "GtkAda First Window",
+      "level": 8,
+      "kind": "Build",
+      "concept": "GtkAda setup",
+      "difficulty": "Foundation",
+      "xp": 220,
+      "summary": "Create a minimal GtkAda window from an Alire crate.",
+      "instructions": [
+        "Create a new Alire executable crate.",
+        "Add GtkAda as an Alire dependency using the crate version available on your system.",
+        "Create a window titled Ada Mastery.",
+        "Add a label and a Close button.",
+        "Connect the window destroy signal so the application exits cleanly."
+      ],
+      "acceptance": [
+        "The dependency is recorded in alire.toml.",
+        "The window opens from alr run.",
+        "The button or window close control exits cleanly."
+      ],
+      "commands": "alr init --bin gtkada_first_window\ncd gtkada_first_window\nalr with gtkada\nalr build\nalr run"
+    },
+    {
+      "slug": "aircraft-status-capstone",
+      "title": "Foundation Capstone: Aircraft Status",
+      "level": 10,
+      "kind": "Mastery",
+      "concept": "Foundation integration",
+      "difficulty": "Boss Quest",
+      "xp": 500,
+      "summary": "Combine Alire, types, packages, records, input validation, and GtkAda.",
+      "instructions": [
+        "Build an Alire-based GtkAda aircraft status application.",
+        "Keep aircraft state in a non-GUI package.",
+        "Display heading, altitude, airspeed, and health state.",
+        "Validate edited values with Ada ranges or subtypes.",
+        "Show a useful error dialog for invalid input.",
+        "Add at least one AUnit test for the non-GUI package."
+      ],
+      "acceptance": [
+        "Domain logic builds without depending on GtkAda widgets.",
+        "The UI calls the domain package through a clear API.",
+        "Invalid values cannot silently enter the model.",
+        "The test can run independently of the GUI."
+      ]
+    }
+  ]
+}

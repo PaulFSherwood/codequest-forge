@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ quest.title }} | Ada Mastery</title>
+  <link rel="stylesheet" href="/static/css/language-tracks.css">
+</head>
+<body>
+<header class="topbar">
+  <div>
+    <div class="eyebrow">ADA QUEST · LEVEL {{ quest.level }}</div>
+    <h1>{{ quest.title }}</h1>
+    <p>{{ quest.kind }} · {{ quest.concept }} · {{ quest.xp }} XP</p>
+  </div>
+  <a class="home-link" href="/learning/ada/quests">Back to Ada Quests</a>
+</header>
+
+<main class="quest-detail-main">
+  {% if result == "correct" %}
+  <div class="result-box correct">Correct. This quest is now complete.</div>
+  {% elif result == "review" %}
+  <div class="result-box review">Not quite. Review the requirement and answer again in your own words.</div>
+  {% endif %}
+
+  <section class="quest-detail-card">
+    <div class="quest-detail-heading">
+      <div>
+        <div class="eyebrow">{{ quest.difficulty }}</div>
+        <h2>{{ quest.summary }}</h2>
+      </div>
+      {% if completed %}<span class="complete-badge">Completed</span>{% endif %}
+    </div>
+
+    {% if quest.question %}
+    <div class="question-box">
+      <h3>Question</h3>
+      <p>{{ quest.question }}</p>
+      <form method="post" action="/learning/ada/quest/{{ quest.slug }}/answer">
+        <textarea name="answer" rows="5" required placeholder="Answer in your own words...">{{ last_answer }}</textarea>
+        <button type="submit">Check Answer</button>
+      </form>
+      {% if attempts %}<p class="attempts">Attempts: {{ attempts }}</p>{% endif %}
+    </div>
+    {% endif %}
+
+    <h3>Instructions</h3>
+    <ol class="instruction-list">
+      {% for item in quest.instructions %}<li>{{ item }}</li>{% endfor %}
+    </ol>
+
+    {% if quest.commands %}
+    <h3>Commands</h3>
+    <pre><code>{{ quest.commands }}</code></pre>
+    {% endif %}
+
+    {% if quest.starter_code %}
+    <h3>Starter Code</h3>
+    <pre><code>{{ quest.starter_code }}</code></pre>
+    {% endif %}
+
+    <h3>Completion Check</h3>
+    <ul class="instruction-list">
+      {% for item in quest.acceptance %}<li>{{ item }}</li>{% endfor %}
+    </ul>
+
+    {% if not quest.question and not completed %}
+    <form method="post" action="/learning/ada/quest/{{ quest.slug }}/complete">
+      <button type="submit">I Completed This Quest</button>
+    </form>
+    {% endif %}
+  </section>
+</main>
+</body>
+</html>

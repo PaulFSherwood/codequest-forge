@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ada Quests | CodeQuest Forge</title>
+  <link rel="stylesheet" href="/static/css/language-tracks.css">
+</head>
+<body>
+<header class="topbar">
+  <div>
+    <div class="eyebrow">ACTIVE LANGUAGE · ADA</div>
+    <h1>Ada Mastery Quests</h1>
+    <p>Alire first. Repetition from recall through senior design. GtkAda included.</p>
+  </div>
+  <div class="header-actions">
+    <a class="home-link" href="/learning/tracks">Change Language</a>
+    <a class="home-link" href="/">Return to the Forge</a>
+  </div>
+</header>
+
+<main>
+  <section class="ada-status">
+    <div>
+      <div class="eyebrow">CURRENT GRIND</div>
+      <h2>{{ current_title }}</h2>
+      <p>Next: {{ next_title }} at {{ next_at }} completed quests</p>
+    </div>
+    <div class="progress-block">
+      <strong>{{ completed_count }} / {{ total_count }}</strong>
+      <span>foundation quests completed</span>
+    </div>
+  </section>
+
+  {% if next_quest %}
+  <section class="next-quest-card">
+    <div>
+      <div class="eyebrow">DO THIS NEXT</div>
+      <h2>{{ next_quest.title }}</h2>
+      <p>{{ next_quest.summary }}</p>
+    </div>
+    <a class="primary-link" href="/learning/ada/quest/{{ next_quest.slug }}">Start Next Quest</a>
+  </section>
+  {% else %}
+  <section class="next-quest-card"><h2>Foundation path complete.</h2></section>
+  {% endif %}
+
+  <section class="quest-list">
+    {% for quest in quests %}
+    <article class="ada-quest-card {% if quest.slug in completed %}completed{% endif %}">
+      <div class="quest-level">{{ quest.level }}</div>
+      <div class="quest-copy">
+        <div class="quest-meta">{{ quest.kind }} · {{ quest.concept }} · {{ quest.xp }} XP</div>
+        <h3>{{ quest.title }}</h3>
+        <p>{{ quest.summary }}</p>
+      </div>
+      <a class="quest-open" href="/learning/ada/quest/{{ quest.slug }}">
+        {% if quest.slug in completed %}Review{% else %}Open{% endif %}
+      </a>
+    </article>
+    {% endfor %}
+  </section>
+</main>
+</body>
+</html>

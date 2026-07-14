@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Language Tracks | CodeQuest Forge</title>
+  
+<style id="ada-integrated-styles">
+  .cq-integrated-page {
+    min-height: 100vh;
+    margin: 0;
+    color: var(--text-color, var(--text, #e7ecf3));
+    background: var(--page-bg, var(--bg, #0b111b));
+    font-family: var(--font-family, system-ui, sans-serif);
+  }
+
+  .cq-integrated-page .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 22px clamp(18px, 4vw, 54px);
+    border-bottom: 1px solid var(--border-color, var(--border, #344155));
+    background: var(--panel-bg, var(--panel, #121a28));
+  }
+
+  .cq-integrated-page .topbar h1,
+  .cq-integrated-page h2,
+  .cq-integrated-page h3 {
+    margin-top: 0;
+  }
+
+  .cq-integrated-page .topbar h1 {
+    margin-bottom: 5px;
+  }
+
+  .cq-integrated-page .topbar p,
+  .cq-integrated-page .ada-status p,
+  .cq-integrated-page .next-quest-card p,
+  .cq-integrated-page .quest-copy p {
+    margin-bottom: 0;
+    color: var(--muted-color, var(--muted, #a8b2c3));
+  }
+
+  .cq-integrated-page main {
+    width: min(1200px, calc(100% - 32px));
+    margin: 26px auto 60px;
+  }
+
+  .cq-integrated-page .eyebrow,
+  .cq-integrated-page .quest-meta {
+    color: var(--accent-color, var(--gold, #e6b95c));
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .cq-integrated-page .home-link {
+    color: var(--accent-color, var(--gold, #e6b95c));
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .cq-integrated-page .header-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .cq-integrated-page .ada-status,
+  .cq-integrated-page .next-quest-card,
+  .cq-integrated-page .quest-detail-card,
+  .cq-integrated-page .track-card,
+  .cq-integrated-page .active-panel {
+    border: 1px solid var(--border-color, var(--border, #344155));
+    border-radius: var(--card-radius, 12px);
+    background: var(--card-bg, var(--panel, #121a28));
+    box-shadow: var(--card-shadow, 0 10px 28px rgba(0, 0, 0, .22));
+  }
+
+  .cq-integrated-page .ada-status,
+  .cq-integrated-page .next-quest-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+    padding: 20px;
+    margin-bottom: 15px;
+  }
+
+  .cq-integrated-page .progress-block {
+    text-align: right;
+  }
+
+  .cq-integrated-page .progress-block strong {
+    display: block;
+    color: var(--accent-color, var(--gold, #e6b95c));
+    font-size: 28px;
+  }
+
+  .cq-integrated-page .progress-block span {
+    color: var(--muted-color, var(--muted, #a8b2c3));
+    font-size: 13px;
+  }
+
+  .cq-integrated-page .primary-link,
+  .cq-integrated-page .quest-open,
+  .cq-integrated-page button {
+    display: inline-block;
+    padding: 10px 15px;
+    border: 1px solid var(--accent-border, #9a7431);
+    border-radius: 8px;
+    color: var(--button-text, #17120a);
+    background: var(--accent-color, var(--gold, #e6b95c));
+    font: inherit;
+    font-weight: 800;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .cq-integrated-page .quest-list,
+  .cq-integrated-page .stage-list {
+    display: grid;
+    gap: 11px;
+  }
+
+  .cq-integrated-page .ada-quest-card,
+  .cq-integrated-page .stage {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border: 1px solid var(--border-color, var(--border, #344155));
+    border-radius: 10px;
+    background: var(--secondary-card-bg, rgba(15, 23, 36, .9));
+  }
+
+  .cq-integrated-page .ada-quest-card.completed {
+    border-color: var(--success-color, #48c978);
+  }
+
+  .cq-integrated-page .quest-level,
+  .cq-integrated-page .stage-number {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    color: #07101d;
+    background: var(--secondary-accent, #67a5f5);
+    font-weight: 900;
+  }
+
+  .cq-integrated-page .ada-quest-card.completed .quest-level {
+    background: var(--success-color, #48c978);
+  }
+
+  .cq-integrated-page .quest-copy h3 {
+    margin: 3px 0 5px;
+  }
+
+  .cq-integrated-page .quest-detail-main {
+    max-width: 980px;
+  }
+
+  .cq-integrated-page .quest-detail-card,
+  .cq-integrated-page .active-panel {
+    padding: clamp(18px, 3vw, 32px);
+  }
+
+  .cq-integrated-page .quest-detail-heading,
+  .cq-integrated-page .panel-heading,
+  .cq-integrated-page .track-heading,
+  .cq-integrated-page .stage-title-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+  }
+
+  .cq-integrated-page .complete-badge,
+  .cq-integrated-page .active-badge,
+  .cq-integrated-page .quest-mode {
+    height: fit-content;
+    padding: 6px 10px;
+    border: 1px solid var(--success-color, #48c978);
+    border-radius: 999px;
+    color: var(--success-color, #48c978);
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .cq-integrated-page .question-box {
+    margin: 20px 0;
+    padding: 16px;
+    border: 1px solid var(--secondary-accent, #67a5f5);
+    border-radius: 10px;
+    background: rgba(55, 107, 190, .1);
+  }
+
+  .cq-integrated-page textarea {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 10px 0;
+    padding: 12px;
+    border: 1px solid var(--border-color, var(--border, #344155));
+    border-radius: 8px;
+    color: inherit;
+    background: var(--input-bg, #09101a);
+    font: inherit;
+  }
+
+  .cq-integrated-page pre {
+    overflow-x: auto;
+    padding: 16px;
+    border: 1px solid var(--border-color, var(--border, #344155));
+    border-radius: 9px;
+    background: var(--code-bg, #070c13);
+    line-height: 1.45;
+  }
+
+  .cq-integrated-page .instruction-list {
+    color: var(--body-text, #ccd4df);
+    line-height: 1.65;
+  }
+
+  .cq-integrated-page .result-box {
+    margin-bottom: 15px;
+    padding: 13px 15px;
+    border-radius: 9px;
+    font-weight: 800;
+  }
+
+  .cq-integrated-page .result-box.correct {
+    border: 1px solid var(--success-color, #48c978);
+    color: var(--success-color, #48c978);
+  }
+
+  .cq-integrated-page .result-box.review {
+    border: 1px solid var(--accent-color, #e6b95c);
+    color: var(--accent-color, #e6b95c);
+  }
+
+  .cq-integrated-page .track-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+    gap: 14px;
+  }
+
+  .cq-integrated-page .track-card {
+    display: flex;
+    flex-direction: column;
+    padding: 18px;
+  }
+
+  .cq-integrated-page .track-card.active {
+    border-color: var(--success-color, #48c978);
+  }
+
+  .cq-integrated-page .toolchain,
+  .cq-integrated-page .cycle-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin: 10px 0 16px;
+  }
+
+  .cq-integrated-page .toolchain span,
+  .cq-integrated-page .cycle-steps span {
+    padding: 5px 8px;
+    border: 1px solid var(--border-color, var(--border, #344155));
+    border-radius: 7px;
+    font-size: 12px;
+  }
+
+  .cq-integrated-page .active-panel {
+    margin-top: 18px;
+  }
+
+  .cq-integrated-page .stage {
+    grid-template-columns: 48px minmax(0, 1fr);
+  }
+
+  .cq-integrated-page .stage form {
+    max-width: 190px;
+  }
+
+  @media (max-width: 720px) {
+    .cq-integrated-page .topbar,
+    .cq-integrated-page .ada-status,
+    .cq-integrated-page .next-quest-card,
+    .cq-integrated-page .quest-detail-heading,
+    .cq-integrated-page .panel-heading,
+    .cq-integrated-page .track-heading,
+    .cq-integrated-page .stage-title-row {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .cq-integrated-page .progress-block {
+      text-align: left;
+    }
+
+    .cq-integrated-page .ada-quest-card {
+      grid-template-columns: 42px minmax(0, 1fr);
+    }
+
+    .cq-integrated-page .quest-open {
+      grid-column: 1 / -1;
+      width: 100%;
+    }
+  }
+</style>
+
+</head>
+<body class="cq-integrated-page">
+  <header class="topbar">
+    <div>
+      <div class="eyebrow">CODEQUEST FORGE</div>
+      <h1>Language Tracks</h1>
+      <p>Switch languages without resetting the learning system.</p>
+    </div>
+    <a class="home-link" href="/">Return to the Forge</a>
+  </header>
+
+  <main>
+    <section class="track-grid">
+      {% for track in tracks %}
+      <article class="track-card {% if profile.active_track == track.id %}active{% endif %}">
+        <div class="track-heading">
+          <div>
+            <h2>{{ track.name }}</h2>
+            <p>{{ track.subtitle }}</p>
+          </div>
+          {% if profile.active_track == track.id %}
+          <span class="active-badge">Active</span>
+          {% endif %}
+        </div>
+
+        <div class="toolchain">
+          {% for tool in track.toolchain %}
+          <span>{{ tool }}</span>
+          {% endfor %}
+        </div>
+
+        <form method="post" action="/learning/tracks/select">
+          <input type="hidden" name="track_id" value="{{ track.id }}">
+          <button type="submit" {% if not track.enabled %}disabled{% endif %}>
+            {% if profile.active_track == track.id %}
+            Continue {{ track.name }}
+            {% else %}
+            Switch to {{ track.name }}
+            {% endif %}
+          </button>
+        </form>
+      </article>
+      {% endfor %}
+    </section>
+
+    {% if active_track %}
+    <section class="active-panel">
+      <div class="panel-heading">
+        <div>
+          <div class="eyebrow">ACTIVE PATH</div>
+          <h2>{{ active_track.name }} Mastery</h2>
+        </div>
+        <div class="quest-mode">Next cycle: {{ profile.quest_mode }}</div>
+      </div>
+
+      {% if active_track.stages %}
+      <div class="stage-list">
+        {% for stage in active_track.stages %}
+        <article class="stage {% if profile.active_stage == stage.id %}selected{% endif %}">
+          <div class="stage-number">{{ loop.index }}</div>
+          <div class="stage-content">
+            <div class="stage-title-row">
+              <h3>{{ stage.name }}</h3>
+              <span>Levels {{ stage.levels }}</span>
+            </div>
+            <ul>
+              {% for topic in stage.topics %}
+              <li>{{ topic }}</li>
+              {% endfor %}
+            </ul>
+            <form method="post" action="/learning/tracks/stage">
+              <input type="hidden" name="stage_id" value="{{ stage.id }}">
+              <button type="submit">
+                {% if profile.active_stage == stage.id %}Current Stage{% else %}Train Here{% endif %}
+              </button>
+            </form>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+
+      <div class="cycle">
+        <h3>Repetition Cycle</h3>
+        <div class="cycle-steps">
+          {% for mode in active_track.quest_cycle %}
+          <span>{{ loop.index }}. {{ mode }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      {% else %}
+      <div class="empty-track">
+        This language is available for selection, but its curriculum has not been authored yet.
+      </div>
+      {% endif %}
+    </section>
+    {% endif %}
+  </main>
+</body>
+</html>

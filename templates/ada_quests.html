@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Ada Quests | CodeQuest Forge</title>
+  
+<style id="ada-integrated-styles">
+  .cq-integrated-page {
+    min-height: 100vh;
+    margin: 0;
+    color: var(--text-color, var(--text, #e7ecf3));
+    background: var(--page-bg, var(--bg, #0b111b));
+    font-family: var(--font-family, system-ui, sans-serif);
+  }
+
+  .cq-integrated-page .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 22px clamp(18px, 4vw, 54px);
+    border-bottom: 1px solid var(--border-color, var(--border, #344155));
+    background: var(--panel-bg, var(--panel, #121a28));
+  }
+
+  .cq-integrated-page .topbar h1,
+  .cq-integrated-page h2,
+  .cq-integrated-page h3 {
+    margin-top: 0;
+  }
+
+  .cq-integrated-page .topbar h1 {
+    margin-bottom: 5px;
+  }
+
+  .cq-integrated-page .topbar p,
+  .cq-integrated-page .ada-status p,
+  .cq-integrated-page .next-quest-card p,
+  .cq-integrated-page .quest-copy p {
+    margin-bottom: 0;
+    color: var(--muted-color, var(--muted, #a8b2c3));
+  }
+
+  .cq-integrated-page main {
+    width: min(1200px, calc(100% - 32px));
+    margin: 26px auto 60px;
+  }
+
+  .cq-integrated-page .eyebrow,
+  .cq-integrated-page .quest-meta {
+    color: var(--accent-color, var(--gold, #e6b95c));
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+  }
+
+  .cq-integrated-page .home-link {
+    color: var(--accent-color, var(--gold, #e6b95c));
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .cq-integrated-page .header-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .cq-integrated-page .ada-status,
+  .cq-integrated-page .next-quest-card,
+  .cq-integrated-page .quest-detail-card,
+  .cq-integrated-page .track-card,
+  .cq-integrated-page .active-panel {
+    border: 1px solid var(--border-color, var(--border, #344155));
+    border-radius: var(--card-radius, 12px);
+    background: var(--card-bg, var(--panel, #121a28));
+    box-shadow: var(--card-shadow, 0 10px 28px rgba(0, 0, 0, .22));
+  }
+
+  .cq-integrated-page .ada-status,
+  .cq-integrated-page .next-quest-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 22px;
+    padding: 20px;
+    margin-bottom: 15px;
+  }
+
+  .cq-integrated-page .progress-block {
+    text-align: right;
+  }
+
+  .cq-integrated-page .progress-block strong {
+    display: block;
+    color: var(--accent-color, var(--gold, #e6b95c));
+    font-size: 28px;
+  }
+
+  .cq-integrated-page .progress-block span {
+    color: var(--muted-color, var(--muted, #a8b2c3));
+    font-size: 13px;
+  }
+
+  .cq-integrated-page .primary-link,
+  .cq-integrated-page .quest-open,
+  .cq-integrated-page button {
+    display: inline-block;
+    padding: 10px 15px;
+    border: 1px solid var(--accent-border, #9a7431);
+    border-radius: 8px;
+    color: var(--button-text, #17120a);
+    background: var(--accent-color, var(--gold, #e6b95c));
+    font: inherit;
+    font-weight: 800;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .cq-integrated-page .quest-list,
+  .cq-integrated-page .stage-list {
+    display: grid;
+    gap: 11px;
+  }
+
+  .cq-integrated-page .ada-quest-card,
+  .cq-integrated-page .stage {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border: 1px solid var(--border-color, var(--border, #344155));
+    border-radius: 10px;
+    background: var(--secondary-card-bg, rgba(15, 23, 36, .9));
+  }
+
+  .cq-integrated-page .ada-quest-card.completed {
+    border-color: var(--success-color, #48c978);
+  }
+
+  .cq-integrated-page .quest-level,
+  .cq-integrated-page .stage-number {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 999px;
+    color: #07101d;
+    background: var(--secondary-accent, #67a5f5);
+    font-weight: 900;
+  }
+
+  .cq-integrated-page .ada-quest-card.completed .quest-level {
+    background: var(--success-color, #48c978);
+  }
+
+  .cq-integrated-page .quest-copy h3 {
+    margin: 3px 0 5px;
+  }
+
+  .cq-integrated-page .quest-detail-main {
+    max-width: 980px;
+  }
+
+  .cq-integrated-page .quest-detail-card,
+  .cq-integrated-page .active-panel {
+    padding: clamp(18px, 3vw, 32px);
+  }
+
+  .cq-integrated-page .quest-detail-heading,
+  .cq-integrated-page .panel-heading,
+  .cq-integrated-page .track-heading,
+  .cq-integrated-page .stage-title-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 18px;
+  }
+
+  .cq-integrated-page .complete-badge,
+  .cq-integrated-page .active-badge,
+  .cq-integrated-page .quest-mode {
+    height: fit-content;
+    padding: 6px 10px;
+    border: 1px solid var(--success-color, #48c978);
+    border-radius: 999px;
+    color: var(--success-color, #48c978);
+    font-size: 12px;
+    font-weight: 800;
+  }
+
+  .cq-integrated-page .question-box {
+    margin: 20px 0;
+    padding: 16px;
+    border: 1px solid var(--secondary-accent, #67a5f5);
+    border-radius: 10px;
+    background: rgba(55, 107, 190, .1);
+  }
+
+  .cq-integrated-page textarea {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 10px 0;
+    padding: 12px;
+    border: 1px solid var(--border-color, var(--border, #344155));
+    border-radius: 8px;
+    color: inherit;
+    background: var(--input-bg, #09101a);
+    font: inherit;
+  }
+
+  .cq-integrated-page pre {
+    overflow-x: auto;
+    padding: 16px;
+    border: 1px solid var(--border-color, var(--border, #344155));
+    border-radius: 9px;
+    background: var(--code-bg, #070c13);
+    line-height: 1.45;
+  }
+
+  .cq-integrated-page .instruction-list {
+    color: var(--body-text, #ccd4df);
+    line-height: 1.65;
+  }
+
+  .cq-integrated-page .result-box {
+    margin-bottom: 15px;
+    padding: 13px 15px;
+    border-radius: 9px;
+    font-weight: 800;
+  }
+
+  .cq-integrated-page .result-box.correct {
+    border: 1px solid var(--success-color, #48c978);
+    color: var(--success-color, #48c978);
+  }
+
+  .cq-integrated-page .result-box.review {
+    border: 1px solid var(--accent-color, #e6b95c);
+    color: var(--accent-color, #e6b95c);
+  }
+
+  .cq-integrated-page .track-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(245px, 1fr));
+    gap: 14px;
+  }
+
+  .cq-integrated-page .track-card {
+    display: flex;
+    flex-direction: column;
+    padding: 18px;
+  }
+
+  .cq-integrated-page .track-card.active {
+    border-color: var(--success-color, #48c978);
+  }
+
+  .cq-integrated-page .toolchain,
+  .cq-integrated-page .cycle-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin: 10px 0 16px;
+  }
+
+  .cq-integrated-page .toolchain span,
+  .cq-integrated-page .cycle-steps span {
+    padding: 5px 8px;
+    border: 1px solid var(--border-color, var(--border, #344155));
+    border-radius: 7px;
+    font-size: 12px;
+  }
+
+  .cq-integrated-page .active-panel {
+    margin-top: 18px;
+  }
+
+  .cq-integrated-page .stage {
+    grid-template-columns: 48px minmax(0, 1fr);
+  }
+
+  .cq-integrated-page .stage form {
+    max-width: 190px;
+  }
+
+  @media (max-width: 720px) {
+    .cq-integrated-page .topbar,
+    .cq-integrated-page .ada-status,
+    .cq-integrated-page .next-quest-card,
+    .cq-integrated-page .quest-detail-heading,
+    .cq-integrated-page .panel-heading,
+    .cq-integrated-page .track-heading,
+    .cq-integrated-page .stage-title-row {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .cq-integrated-page .progress-block {
+      text-align: left;
+    }
+
+    .cq-integrated-page .ada-quest-card {
+      grid-template-columns: 42px minmax(0, 1fr);
+    }
+
+    .cq-integrated-page .quest-open {
+      grid-column: 1 / -1;
+      width: 100%;
+    }
+  }
+</style>
+
+</head>
+<body class="cq-integrated-page">
+<header class="topbar">
+  <div>
+    <div class="eyebrow">ACTIVE LANGUAGE · ADA</div>
+    <h1>Ada Mastery Quests</h1>
+    <p>Alire first. Repetition from recall through senior design. GtkAda included.</p>
+  </div>
+  <div class="header-actions">
+    <a class="home-link" href="/learning/tracks">Change Language</a>
+    <a class="home-link" href="/">Return to the Forge</a>
+  </div>
+</header>
+
+<main>
+  <section class="ada-status">
+    <div>
+      <div class="eyebrow">CURRENT GRIND</div>
+      <h2>{{ current_title }}</h2>
+      <p>Next: {{ next_title }} at {{ next_at }} completed quests</p>
+    </div>
+    <div class="progress-block">
+      <strong>{{ completed_count }} / {{ total_count }}</strong>
+      <span>foundation quests completed</span>
+    </div>
+  </section>
+
+  {% if next_quest %}
+  <section class="next-quest-card">
+    <div>
+      <div class="eyebrow">DO THIS NEXT</div>
+      <h2>{{ next_quest.title }}</h2>
+      <p>{{ next_quest.summary }}</p>
+    </div>
+    <a class="primary-link" href="/learning/ada/quest/{{ next_quest.slug }}">Start Next Quest</a>
+  </section>
+  {% else %}
+  <section class="next-quest-card"><h2>Foundation path complete.</h2></section>
+  {% endif %}
+
+  <section class="quest-list">
+    {% for quest in quests %}
+    <article class="ada-quest-card {% if quest.slug in completed %}completed{% endif %}">
+      <div class="quest-level">{{ quest.level }}</div>
+      <div class="quest-copy">
+        <div class="quest-meta">{{ quest.kind }} · {{ quest.concept }} · {{ quest.xp }} XP</div>
+        <h3>{{ quest.title }}</h3>
+        <p>{{ quest.summary }}</p>
+      </div>
+      <a class="quest-open" href="/learning/ada/quest/{{ quest.slug }}">
+        {% if quest.slug in completed %}Review{% else %}Open{% endif %}
+      </a>
+    </article>
+    {% endfor %}
+  </section>
+</main>
+</body>
+</html>

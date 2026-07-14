@@ -1,0 +1,46 @@
+{
+  "tracks": [
+    {
+      "id": "ada",
+      "name": "Ada",
+      "enabled": true,
+      "toolchain": [
+        "Alire",
+        "GNAT",
+        "GPRbuild",
+        "AUnit",
+        "SPARK",
+        "GtkAda"
+      ]
+    },
+    {
+      "id": "cpp",
+      "name": "C++",
+      "enabled": true,
+      "toolchain": [
+        "CMake",
+        "Clang",
+        "GCC",
+        "CTest"
+      ]
+    },
+    {
+      "id": "python",
+      "name": "Python",
+      "enabled": false,
+      "toolchain": [
+        "Python",
+        "pytest"
+      ]
+    },
+    {
+      "id": "rust",
+      "name": "Rust",
+      "enabled": false,
+      "toolchain": [
+        "Cargo",
+        "Clippy"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,133 @@
+{
+  "tracks": [
+    {
+      "id": "ada",
+      "name": "Ada",
+      "subtitle": "Reliable systems, real-time software, GtkAda, and senior-level design",
+      "enabled": true,
+      "toolchain": ["Alire", "GNAT", "GPRbuild", "AUnit", "GtkAda"],
+      "stages": [
+        {
+          "id": "ada-foundations",
+          "name": "Ada Foundations",
+          "levels": "1-10",
+          "topics": [
+            "Types, subtypes, ranges, variables, and constants",
+            "Control flow, procedures, functions, and parameter modes",
+            "Packages, package bodies, arrays, records, and exceptions",
+            "Alire crate creation, building, running, and dependencies"
+          ]
+        },
+        {
+          "id": "ada-type-mastery",
+          "name": "Type-System Mastery",
+          "levels": "11-20",
+          "topics": [
+            "Derived, private, limited, discriminated, and modular types",
+            "Contracts, predicates, invariants, and defensive API design",
+            "Generics, containers, iterators, and controlled types"
+          ]
+        },
+        {
+          "id": "ada-architecture",
+          "name": "Architecture and Object Orientation",
+          "levels": "21-30",
+          "topics": [
+            "Tagged types, interfaces, dispatching, and composition",
+            "Package layering, child packages, dependency direction",
+            "Separating domain logic from UI, networking, and platform code"
+          ]
+        },
+        {
+          "id": "ada-gtkada",
+          "name": "GtkAda Applications",
+          "levels": "31-40",
+          "topics": [
+            "GtkAda widgets, containers, signals, callbacks, and builders",
+            "Application state without unsafe global coupling",
+            "Model-view separation and reusable custom widgets",
+            "Background work, UI responsiveness, validation, and error dialogs",
+            "Build a professional desktop application using Alire and GtkAda"
+          ]
+        },
+        {
+          "id": "ada-concurrency",
+          "name": "Concurrency and Real-Time Ada",
+          "levels": "41-50",
+          "topics": [
+            "Tasks, rendezvous, entries, protected objects, and select statements",
+            "Timing, priorities, race prevention, and deterministic execution",
+            "Ravenscar-oriented design and fault containment"
+          ]
+        },
+        {
+          "id": "ada-systems",
+          "name": "Systems and Interoperability",
+          "levels": "51-60",
+          "topics": [
+            "Representation clauses, bit fields, endianness, and binary protocols",
+            "Interfaces.C, Convention C, imported functions, and safe wrappers",
+            "Networking, SDL, hardware-facing structures, and memory ownership"
+          ]
+        },
+        {
+          "id": "ada-senior",
+          "name": "Senior Ada Engineering",
+          "levels": "61-80",
+          "topics": [
+            "API review, architecture decisions, testing strategy, and maintainability",
+            "Performance analysis, logging, configuration, and backward compatibility",
+            "Code reviews, refactoring plans, technical debt, and mentoring explanations"
+          ]
+        },
+        {
+          "id": "ada-capstone",
+          "name": "Senior Capstone",
+          "levels": "81-100",
+          "topics": [
+            "Design and implement a substantial Alire-based Ada system",
+            "Include a GtkAda interface plus independently testable domain packages",
+            "Use contracts, tests, logging, documentation, and release packaging",
+            "Defend architectural choices in a senior-level review"
+          ]
+        }
+      ],
+      "quest_cycle": [
+        "Recall",
+        "Read",
+        "Predict",
+        "Repair",
+        "Write",
+        "Test",
+        "Refactor",
+        "Design",
+        "Review",
+        "Mastery"
+      ]
+    },
+    {
+      "id": "cpp",
+      "name": "C++",
+      "subtitle": "Modern C++, systems design, testing, and architecture",
+      "enabled": true,
+      "toolchain": ["CMake", "Clang", "GCC", "CTest"],
+      "stages": []
+    },
+    {
+      "id": "python",
+      "name": "Python",
+      "subtitle": "Automation, services, testing, and maintainable application design",
+      "enabled": true,
+      "toolchain": ["Python", "pytest", "FastAPI"],
+      "stages": []
+    },
+    {
+      "id": "rust",
+      "name": "Rust",
+      "subtitle": "Memory-safe systems programming and concurrency",
+      "enabled": true,
+      "toolchain": ["Cargo", "rustc", "Clippy"],
+      "stages": []
+    }
+  ]
+}

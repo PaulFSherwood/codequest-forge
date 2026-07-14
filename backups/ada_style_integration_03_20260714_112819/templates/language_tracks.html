@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Language Tracks | CodeQuest Forge</title>
+  <link rel="stylesheet" href="/static/css/language-tracks.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <div class="eyebrow">CODEQUEST FORGE</div>
+      <h1>Language Tracks</h1>
+      <p>Switch languages without resetting the learning system.</p>
+    </div>
+    <a class="home-link" href="/">Return to the Forge</a>
+  </header>
+
+  <main>
+    <section class="track-grid">
+      {% for track in tracks %}
+      <article class="track-card {% if profile.active_track == track.id %}active{% endif %}">
+        <div class="track-heading">
+          <div>
+            <h2>{{ track.name }}</h2>
+            <p>{{ track.subtitle }}</p>
+          </div>
+          {% if profile.active_track == track.id %}
+          <span class="active-badge">Active</span>
+          {% endif %}
+        </div>
+
+        <div class="toolchain">
+          {% for tool in track.toolchain %}
+          <span>{{ tool }}</span>
+          {% endfor %}
+        </div>
+
+        <form method="post" action="/learning/tracks/select">
+          <input type="hidden" name="track_id" value="{{ track.id }}">
+          <button type="submit" {% if not track.enabled %}disabled{% endif %}>
+            {% if profile.active_track == track.id %}
+            Continue {{ track.name }}
+            {% else %}
+            Switch to {{ track.name }}
+            {% endif %}
+          </button>
+        </form>
+      </article>
+      {% endfor %}
+    </section>
+
+    {% if active_track %}
+    <section class="active-panel">
+      <div class="panel-heading">
+        <div>
+          <div class="eyebrow">ACTIVE PATH</div>
+          <h2>{{ active_track.name }} Mastery</h2>
+        </div>
+        <div class="quest-mode">Next cycle: {{ profile.quest_mode }}</div>
+      </div>
+
+      {% if active_track.stages %}
+      <div class="stage-list">
+        {% for stage in active_track.stages %}
+        <article class="stage {% if profile.active_stage == stage.id %}selected{% endif %}">
+          <div class="stage-number">{{ loop.index }}</div>
+          <div class="stage-content">
+            <div class="stage-title-row">
+              <h3>{{ stage.name }}</h3>
+              <span>Levels {{ stage.levels }}</span>
+            </div>
+            <ul>
+              {% for topic in stage.topics %}
+              <li>{{ topic }}</li>
+              {% endfor %}
+            </ul>
+            <form method="post" action="/learning/tracks/stage">
+              <input type="hidden" name="stage_id" value="{{ stage.id }}">
+              <button type="submit">
+                {% if profile.active_stage == stage.id %}Current Stage{% else %}Train Here{% endif %}
+              </button>
+            </form>
+          </div>
+        </article>
+        {% endfor %}
+      </div>
+
+      <div class="cycle">
+        <h3>Repetition Cycle</h3>
+        <div class="cycle-steps">
+          {% for mode in active_track.quest_cycle %}
+          <span>{{ loop.index }}. {{ mode }}</span>
+          {% endfor %}
+        </div>
+      </div>
+      {% else %}
+      <div class="empty-track">
+        This language is available for selection, but its curriculum has not been authored yet.
+      </div>
+      {% endif %}
+    </section>
+    {% endif %}
+  </main>
+</body>
+</html>
