@@ -3,7 +3,8 @@
   "attempts": {},
   "last_answer": {},
   "active_quest": "alire-first-crate",
-  "version": 3,
+  "version": 7,
   "quests": {},
-  "last_opened": "intro_dungeon-01-toolchain-07-repair"
+  "last_opened": "intro-dungeon-01-workspace-02-question",
+  "curriculum": "dungeon_walk_concrete_intro"
 }

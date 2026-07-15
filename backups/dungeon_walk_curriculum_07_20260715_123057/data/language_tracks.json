@@ -3,12 +3,11 @@
     {
       "id": "ada",
       "name": "Ada",
-      "subtitle": "Project-based Ada mastery using Alire, SDLada, ECS, and GtkAda",
+      "subtitle": "Five cumulative Alire projects from fundamentals through GtkAda",
       "enabled": true,
       "toolchain": [
         "Alire",
         "GNAT",
-        "GPRbuild",
         "AUnit",
         "SDLada",
         "GtkAda"
@@ -22,29 +21,26 @@
       "toolchain": [
         "CMake",
         "Clang",
-        "GCC",
-        "CTest"
+        "GCC"
       ]
     },
     {
       "id": "python",
       "name": "Python",
-      "subtitle": "Automation, services, and testing",
-      "enabled": true,
+      "subtitle": "Automation, services, and tools",
+      "enabled": false,
       "toolchain": [
         "Python",
-        "pytest",
-        "FastAPI"
+        "pytest"
       ]
     },
     {
       "id": "rust",
       "name": "Rust",
       "subtitle": "Memory-safe systems programming",
-      "enabled": true,
+      "enabled": false,
       "toolchain": [
         "Cargo",
-        "rustc",
         "Clippy"
       ]
     }

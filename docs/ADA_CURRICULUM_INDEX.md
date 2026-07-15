@@ -1,153 +1,29 @@
-# Ada Project Curriculum Index
+# Dungeon Walk Curriculum Index
 
-- Projects: **5**
-- Chapters: **102**
-- Quests: **1020**
+One Alire project, 22 milestones, 132 quests.
 
-## Project 1 — Dungeon Walk
-
-Build a terminal-rendered, Doom-style 3D dungeon that loads maps and lets the player walk through rooms and corridors.
-
-Workspace: `~/Documents/src/projects/ada-mastery/dungeon_walk`
-
-Final product: A tested terminal raycaster with map loading, movement, collision, doors, simple entities, save/load, and release documentation.
-
-1. Create the Alire Workspace — Alire crates and build workflow
-2. Terminal Output and Player Commands — Ada.Text_IO and basic input
-3. Variables, Constants, and Game State — Variables, constants, assignment, and scope
-4. Constrain Coordinates and Angles — Scalar types, subtypes, ranges, and conversions
-5. Model Directions and Tiles — Enumeration types, attributes, and case statements
-6. Build the Main Game Loop — loop, while, for, exit, and iteration invariants
-7. Move Behavior into Procedures — Procedures and in/out/in out modes
-8. Compute Instead of Mutate — Functions, return types, expression functions, and purity
-9. Separate the Dungeon into Packages — Package specifications, bodies, visibility, with, and use type
-10. Represent the Player and Camera — Records, aggregates, defaults, and nested records
-11. Create the Map Grid — Constrained and unconstrained arrays
-12. Protect Map Invariants — Private types, constructors, selectors, and invariants
-13. Parse Commands Reliably — String slices, fixed strings, unbounded strings, and character handling
-14. Contain Errors at Boundaries — Exception declarations, handlers, propagation, and cleanup
-15. Load Maps from Disk — Text file input/output and resource management
-16. Validate the Map Format — Parsing, validation passes, and error reporting
-17. Add Vector Mathematics — Floating-point types, vectors, operators, and numeric packages
-18. Turn the Camera — Ada.Numerics, trigonometry, modular angles, and precision
-19. Generate One Ray per Screen Column — Interpolation, coordinate transforms, and functions over ranges
-20. Find Walls with DDA — Algorithmic loops, step selection, and termination
-21. Render the Pseudo-3D View — Formatting, nested loops, buffers, and separation of model/view
-22. Move Through the Dungeon Safely — State transitions, collision detection, and boundary checks
-23. Doors, Pickups, and Save Data — Variant records, collections, and persistence
-24. Finish Dungeon Walk — AUnit, assertions, documentation, profiling, and release discipline
-
-## Project 2 — Mission Systems Simulator
-
-Build a deterministic avionics-style mission simulator with typed messages, scheduled components, concurrency, fault injection, networking, and tests.
-
-Workspace: `~/Documents/src/projects/ada-mastery/mission_sim`
-
-Final product: A deterministic multi-component simulation with contracts, tasking, protected state, serialization, external interfaces, fault scenarios, and engineering documentation.
-
-1. Define the Simulator Architecture — Layered architecture and GPR/Alire organization
-2. Create Strong Physical Units — Derived numeric types, private types, and unit-safe APIs
-3. Model Bus Messages — Discriminated records and variant parts
-4. Define Replaceable Components — Tagged types, interfaces, dispatching, and composition
-5. Build Reusable Typed Utilities — Generic packages and formal parameters
-6. Manage Components and Events — Ada.Containers vectors, maps, sets, and iteration
-7. Control Dynamic Lifetime — Access types, accessibility, aliased objects, and ownership boundaries
-8. Manage Resources Safely — Controlled and limited controlled types
-9. State Contracts Explicitly — Preconditions, postconditions, predicates, invariants, and assertions
-10. Design Error and Logging Boundaries — Exception taxonomy, logging levels, and fault containment
-11. Load Typed Configuration — Configuration parsing, defaults, validation, and immutable startup state
-12. Serialize Messages and State — Streams, attributes, representation, and versioned formats
-13. Introduce Active Components — Tasks, task types, activation, termination, and ownership
-14. Protect Shared Runtime State — Protected objects, protected functions, procedures, and entries
-15. Coordinate with Entries and Select — Rendezvous, entry guards, selective accept, and asynchronous transfer concepts
-16. Use Real-Time Timing Correctly — Ada.Real_Time, Time_Span, delay until, priorities, and drift
-17. Build a Deterministic Scheduler — Logical time, ordering, fixed steps, and reproducibility
-18. Schedule Events and Inject Faults — Priority queues, state machines, and scenario execution
-19. Expose a Network Adapter — Sockets, framing, partial reads, timeouts, and adapter isolation
-20. Wrap a C Interface Safely — Interfaces.C, Convention, import/export, pointers, and representation clauses
-21. Test and Analyze the Simulator — AUnit, property-style tests, SPARK boundaries, and static analysis
-22. Profile and Release Mission Sim — Performance measurement, diagnostics, compatibility, and release engineering
-
-## Project 3 — Rescue Run SDL
-
-Build a compact top-down rescue game using SDLada and the map ideas learned in Dungeon Walk.
-
-Workspace: `~/Documents/src/projects/ada-mastery/rescue_run_sdl`
-
-Final product: A polished top-down game with maps, camera, animation, enemies, objectives, audio, configuration, tests, and a release build.
-
-1. Open an SDL Window — SDLada dependency and lifecycle
-2. Draw Basic Shapes — Renderers, colors, coordinates, and resource wrappers
-3. Process SDL Events — Event unions, polling loops, and quit behavior
-4. Create an Input Abstraction — State versus events and command mapping
-5. Use a Fixed Update Step — Frame time, accumulator loops, and interpolation
-6. Move the Player — Vectors, velocity, acceleration, and input response
-7. Reuse the Map Format — Data adapters and shared format concepts
-8. Render Tile Maps — Nested iteration, clipping, and tile lookup
-9. Follow the Player with a Camera — World-to-screen transforms and clamping
-10. Resolve Tile Collision — Bounding boxes, swept movement, and axis separation
-11. Load and Manage Textures — SDL_image, ownership, caching, and failure fallback
-12. Animate the Player — Sprite sheets, frame timing, and state machines
-13. Add Enemy Behavior — Finite-state machines and steering
-14. Add Attacks and Projectiles — Object lifetime, collision queries, and cooldowns
-15. Build Rescue Objectives — Collections, triggers, and game rules
-16. Create a HUD — SDL_ttf, formatting, and view models
-17. Add Sound and Music — SDL_mixer, channels, resource policy, and events
-18. Organize Game States — State pattern, pause, menus, and transitions
-19. Load Settings and Save Progress — Configuration, save data, and compatibility
-20. Finish Rescue Run SDL — Integration tests, performance, packaging, and release polish
-
-## Project 4 — Rescue Run ECS Conversion
-
-Rebuild the SDL game in controlled stages as a data-oriented ECS while preserving behavior.
-
-Workspace: `~/Documents/src/projects/ada-mastery/rescue_run_ecs`
-
-Final product: An ECS-based version of Rescue Run with deterministic systems, data-driven entities, tests, profiling, and a documented migration.
-
-1. Plan the ECS Migration — Architecture assessment and behavior baselines
-2. Create Stable Entity IDs — Opaque identifiers, generations, and lifecycle
-3. Define Plain Components — Data-oriented records and component boundaries
-4. Build Component Stores — Generics, sparse/dense storage, and membership
-5. Create the World API — Encapsulation, composition, and entity construction
-6. Define System Phases — System interfaces, ordering, and dependencies
-7. Query Matching Entities — Component signatures and iteration joins
-8. Defer Structural Changes — Command buffers and safe mutation phases
-9. Create an ECS Event Stream — Typed events, buffering, and decoupling
-10. Migrate Movement — Pure systems and component transforms
-11. Migrate Rendering — Read-only systems and adapter boundaries
-12. Migrate Collision — Broad phase, narrow phase, and event generation
-13. Migrate Animation — Component state and time-driven systems
-14. Migrate Enemy AI — State components, decision systems, and navigation data
-15. Serialize ECS Worlds — Stable IDs, component schemas, and versioning
-16. Measure Data-Oriented Performance — Profiling, cache behavior, allocations, and complexity
-17. Test and Debug the ECS — System isolation, world fixtures, invariants, and debug views
-18. Complete the ECS Conversion — Migration completion, architecture review, and release comparison
-
-## Project 5 — Forge Map Editor
-
-Build a useful GtkAda map editor for the Dungeon Walk and Rescue Run map formats, inspired by proven map-editor workflows without copying a full professional editor.
-
-Workspace: `~/Documents/src/projects/ada-mastery/forge_map_editor`
-
-Final product: A desktop editor with a central map canvas, palette, layers, objects, properties, shortcuts, undo/redo, validation, autosave, and export.
-
-1. Create the GtkAda Application — GtkAda dependency, initialization, application/window lifecycle
-2. Build the Editor Shell — Hierarchical widget composition and containers
-3. Menus, Actions, and Shortcuts — Gtk actions, menus, accelerators, and command routing
-4. Separate the Document Model — Model-view separation, observable state, and domain APIs
-5. Draw the Map Canvas — Gtk.Drawing_Area, Cairo, expose/draw callbacks, and coordinate transforms
-6. Pan, Zoom, and Pointer Input — Signals, event masks, gestures, and viewport math
-7. Create the Tile Palette — Lists, icon views, selection models, and reusable widgets
-8. Implement Map Painting Tools — Mouse signals, tools, drag operations, and model updates
-9. Add Layers — Tree/list models, visibility, locking, ordering, and composition
-10. Place Objects and Triggers — Object models, shapes, hit testing, and custom data
-11. Select and Manipulate Content — Selection models, hit testing, drag/resize, and multi-selection
-12. Build the Properties Inspector — Forms, widget binding, validation, and context-sensitive panels
-13. Implement Undo and Redo — Command pattern, reversible changes, stacks, and grouping
-14. Open, Save, and Export — Gtk file dialogs, recent files, serialization, and atomic writes
-15. Validate Maps and Show Errors — Dialogs, list views, diagnostics, and navigation to errors
-16. Autosave and Background Work — Gtk main loop, tasks, synchronization, and idle callbacks
-17. Custom Widgets and Visual Polish — Widget composition, Gtk.Builder, CSS themes, and reusable controls
-18. Finish Forge Map Editor — End-to-end integration, usability testing, packaging, and documentation
-
+| # | Milestone | Ada concept | Final checkpoint |
+|---:|---|---|---|
+| 1 | Create the Alire Project Correctly | Alire workspace creation and project layout | The current directory contains alire.toml and src/dungeon_walk.adb. |
+| 2 | Build, Run, and Edit the Generated Program | Compilation cycle and Ada procedure structure | Dungeon Walk
+You wake inside a silent ship. |
+| 3 | Import Text I/O and Read Ada Declarations | with clauses, use clauses, declarations, and begin/end | The program builds both with fully qualified calls and with the use clause. |
+| 4 | Add Screen Settings and Player State | constants, variables, Positive, Float, Boolean, and Character | The program still builds, and the new declarations exist before begin. |
+| 5 | Create the Main Input Loop | while loops, immediate character input, and case statements | The program reacts to W/A/S/D and exits when Q is pressed without requiring Enter. |
+| 6 | Model the Ship Map with a Subtype and Array | String constraints, subtypes, arrays, and multidimensional indexing | Changing any row from 16 characters to 15 causes compilation to fail; restoring it succeeds. |
+| 7 | Print the Top-Down Map with a Procedure | procedures, for loops, array attributes, and parameters | All 16 map rows appear in the terminal before command input begins. |
+| 8 | Create an Off-Screen Character Buffer | arrays of constrained strings and mutable aggregate state | The terminal displays exactly Screen_Height rows, each containing Screen_Width assigned characters. |
+| 9 | Fill Ceiling and Floor with Nested Loops | nested iteration, conditions, and array assignment | The upper portion of the frame is blank and the lower portion is dotted. |
+| 10 | Write Is_Wall Safely | functions, return values, short-circuit Boolean logic, conversion, and bounds | Wall coordinates return TRUE, floor coordinates return FALSE, and outside coordinates return TRUE without crashing. |
+| 11 | Use Floating-Point Player Coordinates | Float state, assignments, and tile versus world coordinates | Repeated W input shows fractional positions changing by approximately 0.35. |
+| 12 | Turn with Radians and Compute Direction | Ada.Numerics, elementary functions, radians, Sin, and Cos | A and D update the direction components smoothly and in opposite directions. |
+| 13 | Move Forward, Backward, and Slide Along Walls | procedure parameters, local constants, collision checks, and state mutation | W and S move smoothly, the player cannot cross '#', and movement can slide along an open axis. |
+| 14 | Choose a Directional Minimap Symbol | functions without parameters, local constants, abs, nested conditions | Turning through a full circle eventually produces all four arrow symbols. |
+| 15 | Draw the Map into the Screen Buffer | coordinate translation, nested loops, overlays, and constant local indexes | A 16 by 16 minimap appears near the right edge with an arrow at the player's tile. |
+| 16 | Cast One Ray Until It Reaches a Wall | incremental search loops, direction vectors, and exit conditions | The reported distance changes as the player turns or moves. |
+| 17 | Cast a Different Ray for Every Screen Column | linear interpolation, field of view, loop indexes, and Float conversion | The program computes 80 wall distances spanning a 60-degree field of view. |
+| 18 | Project Wall Distance into Vertical Slices | perspective projection, numeric conversion, clamping, and ranges | Vertical wall slices now form a recognizable first-person corridor. |
+| 19 | Shade Walls and Correct Fish-Eye Distortion | piecewise functions and perpendicular-distance correction | Nearby walls use heavy symbols, distant walls use lighter symbols, and flat walls no longer bow outward. |
+| 20 | Assemble the Render Pipeline | procedure composition, deterministic ordering, and status overlays | Each key press redraws one complete frame containing background, walls, minimap, and controls. |
+| 21 | Complete and Verify the Monolithic Ray-Caster | integration, behavior verification, and controlled shutdown | The terminal displays a playable first-person map; W/S move, A/D turn, Q exits, and walls block movement. |
+| 22 | Refactor the Working Program into Introductory Packages | package specifications, package bodies, encapsulation, and dependency boundaries | The refactored project behaves identically, and dungeon_walk.adb becomes a short orchestration procedure. |

@@ -19,9 +19,9 @@ PROFILE_FILE = DATA_DIR / "learning_profile.json"
 TRACKS_FILE = DATA_DIR / "language_tracks.json"
 ADA_QUESTS_FILE = DATA_DIR / "ada_quests.json"
 ADA_PROGRESS_FILE = DATA_DIR / "ada_progress.json"
-ADA_MARKDOWN_FILE = DOCS_DIR / "ADA_DUNGEON_WALK_PATH.md"
-ADA_CSV_FILE = DOCS_DIR / "ADA_DUNGEON_WALK_QUESTS.csv"
-ADA_PATH_FILE = DOCS_DIR / "ADA_DUNGEON_WALK_PATH.md"
+ADA_MARKDOWN_FILE = DOCS_DIR / "ADA_PROJECT_PATH.md"
+ADA_CSV_FILE = DOCS_DIR / "ADA_PROJECT_QUESTS.csv"
+ADA_PATH_FILE = DOCS_DIR / "ADA_PROJECT_PATH.md"
 
 
 def _utc_now() -> str:
@@ -61,7 +61,7 @@ def _tracks() -> list[dict[str, Any]]:
 
 
 def _quest_document() -> dict[str, Any]:
-    return _read_json(ADA_QUESTS_FILE, {"version": 7, "quests": [], "projects": [], "stages": []})
+    return _read_json(ADA_QUESTS_FILE, {"version": 6, "quests": [], "projects": [], "stages": []})
 
 
 def _quests() -> list[dict[str, Any]]:
@@ -161,9 +161,6 @@ def _summary(quest: dict[str, Any] | None) -> dict[str, Any] | None:
         "summary",
         "xp",
         "uses_gtkada",
-        "milestone_number",
-        "milestone_goal",
-        "expected_output",
     )
     return {key: quest.get(key) for key in keys}
 
@@ -306,9 +303,7 @@ async def save_answer(slug: str, request: Request) -> dict[str, Any]:
     return {
         "saved": True,
         "rubric": quest.get("rubric", quest.get("acceptance", [])),
-        "answer_guide": quest.get("answer_guide", ""),
-        "hint": quest.get("hint", ""),
-        "message": "Answer saved. Compare it with the answer guide and rubric, then mark the result.",
+        "message": "Answer saved. Compare it with the rubric, then mark the result.",
     }
 
 
@@ -388,7 +383,7 @@ def download_markdown() -> Response:
     return Response(
         ADA_MARKDOWN_FILE.read_text(encoding="utf-8"),
         media_type="text/markdown; charset=utf-8",
-        headers={"Content-Disposition": 'attachment; filename="ADA_DUNGEON_WALK_PATH.md"'},
+        headers={"Content-Disposition": 'attachment; filename="ADA_QUESTS.md"'},
     )
 
 
@@ -397,7 +392,7 @@ def download_csv() -> Response:
     return Response(
         ADA_CSV_FILE.read_text(encoding="utf-8"),
         media_type="text/csv; charset=utf-8",
-        headers={"Content-Disposition": 'attachment; filename="ADA_DUNGEON_WALK_QUESTS.csv"'},
+        headers={"Content-Disposition": 'attachment; filename="ADA_PROJECT_QUESTS.csv"'},
     )
 
 
@@ -406,7 +401,7 @@ def download_project_path() -> Response:
     return Response(
         ADA_PATH_FILE.read_text(encoding="utf-8"),
         media_type="text/markdown; charset=utf-8",
-        headers={"Content-Disposition": 'attachment; filename="ADA_DUNGEON_WALK_PATH.md"'},
+        headers={"Content-Disposition": 'attachment; filename="ADA_PROJECT_PATH.md"'},
     )
 
 
@@ -757,8 +752,8 @@ INTEGRATION_JS = r"""
 
     root.innerHTML = `<div class="cq-ada-root cq-ada-detail">
       <div class="cq-ada-actions">
-        <button class="cq-ada-button secondary" id="cq-back-to-list">← Dungeon Walk Quest List</button>
-        <a class="cq-ada-link secondary" href="/learning/download/ada-project-path.md">Dungeon Walk Path</a>
+        <button class="cq-ada-button secondary" id="cq-back-to-list">← Project Quest List</button>
+        <a class="cq-ada-link secondary" href="/learning/download/ada-project-path.md">Project Path</a>
         <a class="cq-ada-link secondary" href="/learning/download/ada-quests.csv">CSV</a>
         <a class="cq-ada-link secondary" href="/learning/download/ada-quests.json">JSON</a>
       </div>
@@ -767,12 +762,9 @@ INTEGRATION_JS = r"""
       <p class="cq-ada-muted">${esc(quest.summary)}</p>
       <p><strong>Project:</strong> ${esc(quest.project_name)}<br><strong>Chapter:</strong> ${esc(quest.chapter_name)}<br><strong>Concept:</strong> ${esc(quest.concept)}</p>
       <div class="cq-workspace-box"><strong>Workspace</strong><pre><code>${esc(quest.workspace)}</code></pre><strong>Primary files</strong>${orderedList(quest.source_files || [])}</div>
-      ${quest.lesson ? `<h3>Lesson</h3><p>${esc(quest.lesson)}</p>` : ""}
       <h3>Quest</h3>
       <p>${esc(quest.prompt)}</p>
       ${quest.instructions?.length ? `<h3>Steps</h3>${orderedList(quest.instructions)}` : ""}
-      ${quest.code_to_add ? `<h3>Code or command to work with</h3><pre><code>${esc(quest.code_to_add)}</code></pre>` : ""}
-      ${quest.expected_output ? `<h3>Expected result</h3><pre><code>${esc(quest.expected_output)}</code></pre>` : ""}
       ${quest.acceptance?.length ? `<h3>Completion checks</h3>${orderedList(quest.acceptance)}` : ""}
       ${quest.alire_commands ? `<h3>Alire workflow</h3><pre><code>${esc(quest.alire_commands)}</code></pre>` : ""}
       <h3>Your answer or engineering notes</h3>
@@ -798,8 +790,6 @@ INTEGRATION_JS = r"""
         body: JSON.stringify({answer}),
       });
       root.querySelector("#cq-result").innerHTML = `<div class="cq-ada-notice">${esc(result.message)}</div>
-        ${result.answer_guide ? `<div class="cq-ada-rubric"><strong>Answer guide</strong><p>${esc(result.answer_guide)}</p></div>` : ""}
-        ${result.hint ? `<div class="cq-ada-rubric"><strong>Hint</strong><p>${esc(result.hint)}</p></div>` : ""}
         <div class="cq-ada-rubric"><strong>Rubric</strong>${orderedList(result.rubric)}</div>`;
     });
 
@@ -846,7 +836,7 @@ INTEGRATION_JS = r"""
         <div>
           <div class="cq-ada-eyebrow">ACTIVE LANGUAGE · ADA</div>
           <h1>Ada Project Mastery</h1>
-          <p class="cq-ada-muted">${esc(appState.ada.total)} concrete quests across ${esc(appState.ada.chapter_count)} milestones in one long-lived Alire project.</p>
+          <p class="cq-ada-muted">${esc(appState.ada.total)} cumulative quests across ${esc(appState.ada.project_count)} long-lived Alire projects and ${esc(appState.ada.chapter_count)} project chapters.</p>
         </div>
         <div>
           <div class="cq-ada-count">${esc(appState.ada.mastered)} / ${esc(appState.ada.total)}</div>
@@ -856,7 +846,7 @@ INTEGRATION_JS = r"""
       <section class="cq-project-grid">${projectCards}</section>
       ${next ? `<section class="cq-ada-next"><div><div class="cq-ada-eyebrow">DO THIS NEXT</div><h2>${esc(next.title)}</h2><p class="cq-ada-muted">${esc(next.summary)}</p></div><button class="cq-ada-link" id="cq-open-next">Start</button></section>` : ""}
       <div class="cq-ada-actions" style="margin-bottom:14px">
-        <a class="cq-ada-link secondary" href="/learning/download/ada-project-path.md">Offline Dungeon Walk Path</a>
+        <a class="cq-ada-link secondary" href="/learning/download/ada-project-path.md">Offline Project Path</a>
         <a class="cq-ada-link secondary" href="/learning/download/ada-quests.csv">Offline CSV</a>
         <a class="cq-ada-link secondary" href="/learning/download/ada-quests.json">Editable JSON</a>
       </div>
